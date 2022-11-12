@@ -1,0 +1,29 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+#issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "combatlog"
+version = "${version}"
+displayName = "CombatLog"
+displayTest="NONE"
+authors = "WildToastyMop"
+description = '''
+An attempt to prevent people from logging out while in combat with another player
+'''
+logoFile = "assets/combatlog/icon.png"
+
+[[dependencies.combatlog]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.combatlog]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,)"
+ordering = "NONE"
+side = "BOTH"

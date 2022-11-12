@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "me.toastymop.combatlog.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+  ],
+  "mixins": [
+    "ModDisconnectMixin",
+    "ModEntityDamageMixin",
+    "ModEntityDataSaverMixin",
+    "ModTickMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

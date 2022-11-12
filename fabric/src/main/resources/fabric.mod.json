@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "combatlog",
+  "version": "${version}",
+  "name": "CombatLog",
+  "description": "An attempt to prevent people from logging out while in combat with another player",
+  "authors": [
+    "WildToastyMop"
+  ],
+  "contact": {
+    "sources": "https://github.com/WildToastyMop/CombatLog"
+  },
+  "license": "MIT",
+  "icon": "assets/combatlog/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.toastymop.combatlog.fabric.CombatLogFabric"
+    ]
+  },
+  "mixins": [
+    "combatlog.mixins.json",
+    "combatlog-common.mixins.json"
+  ],
+  "depends": {
+    "minecraft": ">=1.19.2"
+  }
+}

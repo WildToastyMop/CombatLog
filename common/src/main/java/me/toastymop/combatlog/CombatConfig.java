@@ -45,7 +45,12 @@ public class CombatConfig {
         }else {
             FileConfig config = FileConfig.of(file);
             config.load();
-            if((config.get("config.combatTime") instanceof Integer) && (config.get("config.allDamage") instanceof Boolean)  && (config.get("config.deathMessage") instanceof String)){
+            if((config.get("config.combatTime") instanceof Integer) &&
+                    (config.get("config.allDamage") instanceof Boolean)  &&
+                    (config.get("config.disableElytra") instanceof Boolean)  &&
+                    (config.get("config.attackerNoFly") instanceof Boolean) &&
+                    (config.get("config.deathMessage") instanceof String)
+            ){
                 combatTime = config.getInt("config.combatTime");
                 allDamage = config.get("config.allDamage");
                 disableElytra = config.get("config.disableElytra");

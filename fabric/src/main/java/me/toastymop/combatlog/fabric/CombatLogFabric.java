@@ -1,11 +1,11 @@
 package me.toastymop.combatlog.fabric;
 
 import me.toastymop.combatlog.CombatConfig;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.DedicatedServerModInitializer;
 
-public class CombatLogFabric implements ModInitializer {
+public class CombatLogFabric implements DedicatedServerModInitializer {
     @Override
-    public void onInitialize() {
+    public void onInitializeServer() {
         CombatConfig.getConfig();
     }
 }

@@ -10,8 +10,10 @@ public class CombatCheck {
         // Contributor note: I have refactored this method a bit
         // to make it a bit easier to read
         // and remove some unnecessary code like multiple casts, instead of one
-        if (entity instanceof ServerPlayerEntity player) {
-            if ((player.getAttacker() instanceof ServerPlayerEntity attacker) && player.interactionManager.getGameMode().isSurvivalLike() && attacker.interactionManager.getGameMode().isSurvivalLike()) {
+        if (entity instanceof ServerPlayerEntity && ((ServerPlayerEntity)entity).getAttacker() instanceof ServerPlayerEntity) {
+            ServerPlayerEntity player = (ServerPlayerEntity) entity;
+            ServerPlayerEntity attacker = (ServerPlayerEntity) player.getAttacker();
+            if (player.interactionManager.getGameMode().isSurvivalLike() && attacker.interactionManager.getGameMode().isSurvivalLike()) {
                 TagData.setTagTime((IEntityDataSaver) player);
                 if (CombatConfig.disableElytra) {
                     // Stop the player who took damage from flying

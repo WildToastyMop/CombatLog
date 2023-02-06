@@ -14,7 +14,7 @@
   "icon": "assets/combatlog/icon.png",
   "environment": "*",
   "entrypoints": {
-    "main": [
+    "server": [
       "me.toastymop.combatlog.fabric.CombatLogFabric"
     ]
   },

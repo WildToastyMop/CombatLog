@@ -6,7 +6,8 @@
     "ModDisconnectMixin",
     "ModEntityDamageMixin",
     "ModEntityDataSaverMixin",
-    "ModTickMixin"
+    "ModTickMixin",
+    "PlayerEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

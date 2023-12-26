@@ -14,7 +14,7 @@
   "icon": "assets/combatlog/icon.png",
   "environment": "*",
   "entrypoints": {
-    "server": [
+    "main": [
       "me.toastymop.combatlog.fabric.CombatLogFabric"
     ]
   },
@@ -23,6 +23,6 @@
     "combatlog-common.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.20.1"
+    "minecraft": ">=1.20.2"
   }
 }

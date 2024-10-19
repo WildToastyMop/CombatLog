@@ -1,49 +1,72 @@
 package me.toastymop.combatlog;
 
-import com.electronwill.nightconfig.core.file.FileConfig;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.quiltmc.parsers.json.JsonReader;
+import org.quiltmc.parsers.json.JsonWriter;
 
 import java.io.*;
-
+// This class was taken from EMITrades please go check out EMI and its addons nothing but love for them <3
 public class CombatConfig {
-    static File file = new File("./config/combatlog-common.toml");
-    public static int combatTime;
-    public static Boolean allDamage;
-    public static String deathMessage;
-    public static void getConfig() {
-        if (!file.exists()) {
-            try {
-                combatTime = 30;
-                allDamage = false;
-                deathMessage = "\" has died of cowardice\"";
+    public static CombatConfig.Config CONFIG;
+    static File file = new File("./config/combatlog-common.json5");
+    protected static final Logger log = LogManager.getLogger(CombatLog.LOGGER);
 
-                file.getParentFile().mkdirs();
-                file.createNewFile();
-                PrintWriter fos = new PrintWriter(new FileOutputStream(file, false));
-                fos.println("[config]");
-                fos.println("\t#The amount of time a player should be in combat");
-                fos.println("\tcombatTime = "+ combatTime);
-                fos.println("\t#Weather a player should be put in combat from just other players or all damage(true is all damage false is just players)");
-                fos.println("\tallDamage = "+ allDamage.toString());
-                fos.println("\t#The message that shows up when I player disconnects while in combat");
-                fos.println("\t#If you don't add a space to the beginning it will look like \"(player)deathmessage\" instead of \"(player) deathmessage\" ingame");
-                fos.println("\tdeathMessage = "+ deathMessage);
-                fos.flush();
-                fos.close();
+    @SuppressWarnings({"SwitchStatementWithTooFewBranches"})
+    public static Config load() {
+        if (!file.getName().endsWith(".json5"))
+            throw new RuntimeException("Failed to read config");
+        Config cfg = null;
+        if (file.exists()) {
+            try (JsonReader reader = JsonReader.json5(file.toPath())) {
+                cfg = new Config();
+                reader.beginObject();
+                while (reader.hasNext()) {
+                    String nextName = reader.nextName();
+                    switch (nextName) {
+                        case "combatTime":
+                            cfg.combatTime = reader.nextInt();
+                            break;
+                        case "allDamage":
+                            cfg.allDamage = reader.nextBoolean();
+                            break;
+                        case "deathMessage":
+                            cfg.deathMessage = reader.nextString();
+                            break;
+                        default:
+                            reader.skipValue();
+                            break;
+                    }
+                }
+                reader.endObject();
+                return cfg;
             } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }else {
-            FileConfig config = FileConfig.of(file);
-            config.load();
-            if((config.get("config.combatTime") instanceof Integer) && (config.get("config.allDamage") instanceof Boolean)  && (config.get("config.deathMessage") instanceof String)){
-                combatTime = config.getInt("config.combatTime");
-                allDamage = config.get("config.allDamage");
-                deathMessage = config.get("config.deathMessage").toString();
-            } else {
-                File rename = new File("./config/combatlog-common.toml.bak");
-                file.renameTo(rename);
-                getConfig();
+                log.error("Failed to parse config", e);
             }
         }
+        if (cfg == null) cfg = new Config();
+        save(file, cfg);
+        return cfg;
+    }
+
+    public static void save(File file, Config cfg) {
+        try (JsonWriter writer = JsonWriter.json5(file.toPath())) {
+            writer.beginObject();
+            writer.comment("The amount of time in seconds a player should be in combat")
+                    .name("combatTime").value(cfg.combatTime);
+            writer.comment("Weather a player should be put in combat from just other players or all damage(true is all damage false is just players)")
+                    .name("allDamage").value(cfg.allDamage);
+            writer.comment("The death message that shows when a player disconnects while in combat, note that not having a space at the beginning will attach the message to the players name")
+                    .name("deathMessage").value(cfg.deathMessage);
+            writer.endObject();
+        } catch (IOException e) {
+            log.error("Failed to save config", e);
+        }
+    }
+
+    public static class Config {
+        public static Integer combatTime = 30;
+        public static boolean allDamage = false;
+        public static String deathMessage = " has died of cowardice";
     }
 }

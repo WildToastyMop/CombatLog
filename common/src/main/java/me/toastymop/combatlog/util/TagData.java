@@ -16,7 +16,7 @@ public class TagData {
     }
     public static void setTagTime(IEntityDataSaver player) {
         NbtCompound nbt = player.getPersistentData();
-        nbt.putInt("combatTime", CombatConfig.combatTime * 20);
+        nbt.putInt("combatTime", CombatConfig.Config.combatTime * 20);
         nbt.putBoolean("inCombat", true);
     }
 

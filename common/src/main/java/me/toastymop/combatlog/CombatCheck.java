@@ -16,7 +16,7 @@ public class CombatCheck {
             if ((target.getAttacker() instanceof PlayerEntity) && ((ServerPlayerEntity) target).interactionManager.getGameMode().isSurvivalLike() && ((ServerPlayerEntity) Objects.requireNonNull(target.getAttacker())).interactionManager.getGameMode().isSurvivalLike()) {
                 TagData.setTagTime((IEntityDataSaver) target);
                 TagData.setTagTime((IEntityDataSaver) target.getAttacker());
-            } else if (CombatConfig.allDamage) {
+            } else if (CombatConfig.Config.allDamage) {
                 TagData.setTagTime((IEntityDataSaver) target);
             }
         }

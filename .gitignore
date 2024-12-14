@@ -18,3 +18,4 @@ classes/
 .settings
 *.launch
 Merged/
+/common/.architectury-transformer/debug.log

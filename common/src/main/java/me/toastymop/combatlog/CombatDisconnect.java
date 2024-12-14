@@ -18,7 +18,7 @@ public class CombatDisconnect {
         if (TagData.getCombat((IEntityDataSaver) entity)) {
             // if anyone knows how to make this less terrible please help me im begging I tried using the new damagetypes for soooo long
             GameRules.BooleanRule gamerule = Objects.requireNonNull(entity.getServer()).getGameRules().get(SHOW_DEATH_MESSAGES);
-            Text deathMessage = Text.of(entity.getDisplayName().getString()+CombatConfig.deathMessage);
+            Text deathMessage = Text.of(entity.getDisplayName().getString()+CombatConfig.Config.deathMessage);
             if (gamerule.get()){
                 gamerule.set(false, entity.getServer());
                 entity.damage(entity.getDamageSources().outOfWorld(), 100000);

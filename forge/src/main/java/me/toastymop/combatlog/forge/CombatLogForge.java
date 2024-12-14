@@ -7,6 +7,6 @@ import net.minecraftforge.fml.common.Mod;
 @Mod(CombatLog.MOD_ID)
 public class CombatLogForge {
     public CombatLogForge() {
-        CombatConfig.getConfig();
+        CombatConfig.CONFIG = CombatConfig.load();
     }
 }

@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[48,)"
+loaderVersion = "[46,)"
 #issueTrackerURL = ""
 license = "MIT"
 
@@ -18,7 +18,7 @@ logoFile = "assets/combatlog/icon.png"
 [[dependencies.combatlog]]
 modId = "forge"
 mandatory = true
-versionRange = "[48,)"
+versionRange = "[46,)"
 ordering = "NONE"
 side = "SERVER"
 

@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -21,10 +22,10 @@ public abstract class ModEntityDamageMixin extends Entity{
     }
 
     @Shadow
-    public abstract boolean damage(DamageSource source, float amount);
+    public abstract boolean damage(ServerWorld world, DamageSource source, float amount);
 
     @Inject(method = "damage", at = @At("TAIL"))
-    protected void injectCheckMethod(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+    protected void injectCheckMethod(ServerWorld world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         CheckCombat(this);
     }
 }

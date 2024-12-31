@@ -21,11 +21,11 @@ public class CombatDisconnect {
             Text deathMessage = Text.of(entity.getDisplayName().getString()+CombatConfig.Config.deathMessage);
             if (gamerule.get()){
                 gamerule.set(false, entity.getServer());
-                entity.damage(entity.getDamageSources().outOfWorld(), 100000);
+                entity.damage(entity.getServerWorld(),entity.getDamageSources().outOfWorld(), 100000);
                 gamerule.set(true, entity.getServer());
                 entity.getServer().getPlayerManager().broadcast(deathMessage,false);
             } else {
-                entity.damage(entity.getDamageSources().outOfWorld(), 100000);
+                entity.damage(entity.getServerWorld(),entity.getDamageSources().outOfWorld(), 100000);
             }
             TagData.endCombat((IEntityDataSaver) entity);
         }

@@ -2,6 +2,7 @@ plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.9.420" apply false
     id "io.github.pacifistmc.forgix" version "1.2.9"
+    id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
 }
 
 architectury {
@@ -24,7 +25,10 @@ subprojects {
         // The following line declares the mojmap mappings, you may use other mappings as well
         // mappings loom.officialMojangMappings()
         // The following line declares the yarn mappings you may select this one as well.
-        mappings "net.fabricmc:yarn:1.21+build.9:v2"
+        mappings loom.layered {
+            it.mappings("net.fabricmc:yarn:$rootProject.yarn_mappings:v2")
+            it.mappings("dev.architectury:yarn-mappings-patch-neoforge:$rootProject.yarn_mappings_patch_neoforge_version")
+        }
         implementation "org.quiltmc.parsers:json:0.2.1"
     }
 }

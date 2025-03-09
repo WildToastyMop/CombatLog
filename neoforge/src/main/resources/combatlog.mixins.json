@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "me.toastymop.combatlog.mixin.forge",
+  "package": "me.toastymop.combatlog.mixin.neoforge",
   "compatibilityLevel": "JAVA_21",
   "client": [
   ],

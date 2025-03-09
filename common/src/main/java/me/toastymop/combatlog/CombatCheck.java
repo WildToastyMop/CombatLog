@@ -13,10 +13,12 @@ public class CombatCheck {
     public static void CheckCombat(Entity entity) {
         LivingEntity target = (LivingEntity) entity;
         if (target instanceof PlayerEntity) {
-            if ((target.getAttacker() instanceof PlayerEntity) && ((ServerPlayerEntity) target).interactionManager.getGameMode().isSurvivalLike() && ((ServerPlayerEntity) Objects.requireNonNull(target.getAttacker())).interactionManager.getGameMode().isSurvivalLike()) {
+            if ((target.getAttacker() instanceof PlayerEntity) && ((ServerPlayerEntity) target).interactionManager.getGameMode().isSurvivalLike() && ((ServerPlayerEntity) target.getAttacker()).interactionManager.getGameMode().isSurvivalLike()) {
                 TagData.setTagTime((IEntityDataSaver) target);
                 TagData.setTagTime((IEntityDataSaver) target.getAttacker());
-            } else if (CombatConfig.Config.allDamage) {
+            }else if (CombatConfig.Config.allDamage && ((ServerPlayerEntity) target).interactionManager.getGameMode().isSurvivalLike()) {
+                TagData.setTagTime((IEntityDataSaver) target);
+            } else if (CombatConfig.Config.mobDamage && (target.getAttacker() instanceof LivingEntity) && ((ServerPlayerEntity) target).interactionManager.getGameMode().isSurvivalLike()) {
                 TagData.setTagTime((IEntityDataSaver) target);
             }
         }

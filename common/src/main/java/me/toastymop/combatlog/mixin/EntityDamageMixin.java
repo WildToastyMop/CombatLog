@@ -14,9 +14,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static me.toastymop.combatlog.CombatCheck.CheckCombat;
 
 @Mixin(LivingEntity.class)
-public abstract class ModEntityDamageMixin extends Entity{
+public abstract class EntityDamageMixin extends Entity{
 
-    public ModEntityDamageMixin(EntityType<?> type, World world) {
+    public EntityDamageMixin(EntityType<?> type, World world) {
         super(type, world);
     }
 

@@ -12,7 +12,7 @@ import static me.toastymop.combatlog.CombatTicks.CombatTick;
 
 
 @Mixin(MinecraftServer.class)
-public abstract class ModTickMixin {
+public abstract class TickMixin {
 
     @Inject(method = "tick", at = @At("TAIL"))
     private void injectTickMethod(CallbackInfo ci) {

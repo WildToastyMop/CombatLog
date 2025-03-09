@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static me.toastymop.combatlog.CombatDisconnect.OnPlayerDisconnect;
 
 @Mixin(ServerPlayerEntity.class)
-public abstract class ModDisconnectMixin {
+public abstract class DisconnectMixin {
 
     @Inject(method = "onDisconnect", at = @At("HEAD"))
     private void injectDisconnectMethod(CallbackInfo ci) {

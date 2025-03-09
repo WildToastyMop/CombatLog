@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public abstract class ModEntityDataSaverMixin implements IEntityDataSaver {
+public abstract class EntityDataSaverMixin implements IEntityDataSaver {
     private NbtCompound persistentData;
 
     @Override

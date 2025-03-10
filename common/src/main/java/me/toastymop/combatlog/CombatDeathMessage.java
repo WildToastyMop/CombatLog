@@ -22,7 +22,7 @@ public class CombatDeathMessage extends EntityDamageSource {
     public Text getDeathMessage(LivingEntity entity) {
         Text result = Text.literal("");
         result.getSiblings().add(entity.getDisplayName());
-        result.getSiblings().add(Text.of(CombatConfig.deathMessage));
+        result.getSiblings().add(Text.of(CombatConfig.Config.deathMessage));
 
         return result;
     }

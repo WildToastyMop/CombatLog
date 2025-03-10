@@ -11,10 +11,9 @@
     "sources": "https://github.com/WildToastyMop/CombatLog"
   },
   "license": "MIT",
-  "icon": "assets/combatlog/icon.png",
   "environment": "*",
   "entrypoints": {
-    "server": [
+    "main": [
       "me.toastymop.combatlog.fabric.CombatLogFabric"
     ]
   },

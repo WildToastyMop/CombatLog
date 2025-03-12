@@ -7,8 +7,6 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 
-import java.util.Objects;
-
 public class CombatCheck {
     public static void CheckCombat(Entity entity) {
         LivingEntity target = (LivingEntity) entity;

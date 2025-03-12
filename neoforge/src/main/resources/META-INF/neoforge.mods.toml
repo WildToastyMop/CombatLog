@@ -1,15 +1,15 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
 #issueTrackerURL = ""
-license = "MIT"
+license = "Insert License Here"
 
 [[mods]]
 modId = "combatlog"
 version = "${version}"
 displayName = "CombatLog"
-authors = "WildToastyMop"
+authors = "Me!"
 description = '''
-An attempt to prevent people from logging out while in combat with another player
+This is an example description! Tell everyone what your mod is about!
 '''
 #logoFile = ""
 
@@ -18,14 +18,14 @@ modId = "neoforge"
 type = "required"
 versionRange = "[21.0,)"
 ordering = "NONE"
-side = "SERVER"
+side = "BOTH"
 
 [[dependencies.combatlog]]
 modId = "minecraft"
 type = "required"
 versionRange = "[1.21,)"
 ordering = "NONE"
-side = "SERVER"
+side = "BOTH"
 
 [[mixins]]
-config = "combatlog-common.mixins.json"
+config = "combatlog.mixins.json"

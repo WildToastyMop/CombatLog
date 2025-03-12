@@ -2,6 +2,7 @@
   "required": true,
   "package": "me.toastymop.combatlog.mixin",
   "compatibilityLevel": "JAVA_21",
+  "minVersion": "0.8",
   "mixins": [
     "DisconnectMixin",
     "EntityDamageMixin",

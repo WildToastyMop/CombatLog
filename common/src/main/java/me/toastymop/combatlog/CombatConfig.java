@@ -5,10 +5,11 @@ import org.apache.logging.log4j.Logger;
 import org.quiltmc.parsers.json.JsonReader;
 import org.quiltmc.parsers.json.JsonWriter;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 // This class was taken from EMITrades please go check out EMI and its addons nothing but love for them <3
 public class CombatConfig {
-    public static CombatConfig.Config CONFIG;
+    public static Config CONFIG;
     static File file = new File("./config/combatlog-common.json5");
     protected static final Logger log = LogManager.getLogger(CombatLog.LOGGER);
 

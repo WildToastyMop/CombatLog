@@ -7,7 +7,6 @@ license = "MIT"
 modId = "combatlog"
 version = "${version}"
 displayName = "CombatLog"
-# We don't need to create custom test, IGNORE_SERVER_VERSION according to forge docs is perfect for server side mod
 displayTest="IGNORE_SERVER_VERSION"
 authors = "WildToastyMop"
 description = '''

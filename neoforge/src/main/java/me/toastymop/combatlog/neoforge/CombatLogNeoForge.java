@@ -1,4 +1,4 @@
-package me.toastymop.neoforge;
+package me.toastymop.combatlog.neoforge;
 
 import me.toastymop.combatlog.CombatConfig;
 import me.toastymop.combatlog.CombatLog;

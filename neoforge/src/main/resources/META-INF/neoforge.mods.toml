@@ -11,7 +11,7 @@ authors = "WildToastyMop"
 description = '''
 An attempt to prevent people from logging out while in combat with another player
 '''
-#logoFile = ""
+logoFile = "icon.png"
 
 [[dependencies.combatlog]]
 modId = "neoforge"

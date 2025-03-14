@@ -12,7 +12,7 @@ authors = "WildToastyMop"
 description = '''
 An attempt to prevent people from logging out while in combat with another player
 '''
-logoFile = "assets/combatlog/icon.png"
+logoFile = "icon.png"
 
 [[dependencies.combatlog]]
 modId = "forge"

@@ -5,19 +5,27 @@ import org.apache.logging.log4j.Logger;
 import org.quiltmc.parsers.json.JsonReader;
 import org.quiltmc.parsers.json.JsonWriter;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 // This class was taken from EMITrades please go check out EMI and its addons nothing but love for them <3
 public class CombatConfig {
-    public static CombatConfig.Config CONFIG;
-    static File file = new File("./config/combatlog-common.json5");
+    public static Config CONFIG;
+    static File configFolder = new File("./config");
+    static File configFile = new File(configFolder+"/combatlog-common.json5");
     protected static final Logger log = LogManager.getLogger(CombatLog.LOGGER);
 
     public static Config load() {
-        if (!file.getName().endsWith(".json5"))
+        if(!configFolder.exists()){
+            configFolder.mkdirs();
+        }
+        if (!configFile.getName().endsWith(".json5"))
             throw new RuntimeException("Failed to read config");
         Config cfg = null;
-        if (file.exists()) {
-            try (JsonReader reader = JsonReader.json5(file.toPath())) {
+        if (configFile.exists()) {
+            try (JsonReader reader = JsonReader.json5(configFile.toPath())) {
                 cfg = new Config();
                 reader.beginObject();
                 while (reader.hasNext()) {
@@ -50,6 +58,12 @@ public class CombatConfig {
                         case "outCombat":
                             cfg.outCombat = reader.nextString();
                             break;
+                        case "blockedCommands":
+                            cfg.blockedCommands = List.of(reader.nextString().split(","));
+                            break;
+                        case "blockedCommandMessage":
+                            cfg.blockedCommandMessage = reader.nextString();
+                            break;
                         default:
                             reader.skipValue();
                             break;
@@ -62,7 +76,7 @@ public class CombatConfig {
             }
         }
         if (cfg == null) cfg = new Config();
-        save(file, cfg);
+        save(configFile, cfg);
         return cfg;
     }
     public static void save(File file, Config cfg) {
@@ -80,12 +94,16 @@ public class CombatConfig {
                     .name("disablePearl").value(cfg.disablePearl);
             writer.comment("The death message that shows when a player disconnects while in combat, note that not having a space at the beginning will attach the message to the players name")
                     .name("deathMessage").value(cfg.deathMessage);
-            writer.comment("Weather a player should get a popup when they enter combat")
+            writer.comment("Weather a player should get a popup when they enter combat or when trying to run blocked commands")
                     .name("combatNotice").value(cfg.combatNotice);
             writer.comment("The message that shows when a player is in combat, adding {timeLeft} will display how many seconds until combat is over")
                     .name("inCombat").value(cfg.inCombat);
             writer.comment("The message that shows when a player exits combat")
                     .name("outCombat").value(cfg.outCombat);
+            writer.comment("This is a list of commands to be blocked while in combat, do not include the slash and use commas to separate them, leave empty to disable, example \"home,spawn,rtp\"")
+                    .name("blockedCommands").value("");
+            writer.comment("This is the message displayed in chat when a player attempts to use a blocked command")
+                    .name("blockedCommandMessage").value(cfg.blockedCommandMessage);
             writer.endObject();
         } catch (IOException e) {
             log.error("Failed to save config", e);
@@ -101,5 +119,7 @@ public class CombatConfig {
         public static boolean combatNotice = true;
         public static String inCombat = "You are in combat do not leave! {timeLeft} seconds left";
         public static String outCombat = "You are no longer in combat";
+        public static List<String> blockedCommands = new ArrayList<>();
+        public static String blockedCommandMessage = "You are in combat and cannot execute this command";
     }
 }

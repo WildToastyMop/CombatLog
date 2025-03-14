@@ -3,6 +3,7 @@
   "id": "combatlog",
   "version": "${version}",
   "name": "CombatLog",
+  "icon": "icon.png",
   "description": "An attempt to prevent people from logging out while in combat with another player",
   "authors": [
     "WildToastyMop"

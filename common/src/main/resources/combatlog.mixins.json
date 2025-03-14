@@ -9,7 +9,8 @@
     "EntityDataSaverMixin",
     "TickMixin",
     "PlayerEntityMixin",
-    "EnderPearlMixin"
+    "EnderPearlMixin",
+    "CommandManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -7,7 +7,7 @@ public class TagData {
     public static void decreaseTagTime(IEntityDataSaver player) {
 
         NbtCompound nbt = player.getPersistentData();
-        int tagTime = nbt.getInt("combatTime");
+        int tagTime = nbt.getInt("combatTime",0);
         if(tagTime>0) {
             tagTime--;
             nbt.putInt("combatTime", tagTime);
@@ -27,10 +27,10 @@ public class TagData {
     }
     public static int getTagTime(IEntityDataSaver player) {
         NbtCompound nbt = player.getPersistentData();
-        return nbt.getInt("combatTime");
+        return nbt.getInt("combatTime",0);
     }
     public static boolean getCombat(IEntityDataSaver player) {
         NbtCompound nbt = player.getPersistentData();
-        return nbt.getBoolean("inCombat");
+        return nbt.getBoolean("inCombat",false);
     }
 }

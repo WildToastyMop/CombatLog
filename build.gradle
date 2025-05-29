@@ -1,7 +1,7 @@
 plugins {
-    id 'dev.architectury.loom' version '1.7-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '1.10-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
-    id "io.github.pacifistmc.forgix" version "1.2.9"
+    id "io.github.pacifistmc.forgix" version "2.0.0-SNAPSHOT.5.1"
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
 }
 
@@ -10,13 +10,12 @@ architectury {
 }
 
 forgix {
-    group = "me.toastymop"
-    mergedJarName = "combatlog-"+rootProject.mod_version+"-1.21.3-4.jar"
+    destinationDirectory = layout.projectDirectory.dir("Merged")
+    archiveVersion = "$rootProject.mod_version+$rootProject.minecraft_version"
 }
 
 allprojects {
     group = rootProject.maven_group
-    version = rootProject.mod_version
 }
 
 subprojects {
@@ -25,8 +24,7 @@ subprojects {
     apply plugin: 'maven-publish'
 
     base {
-        // Set up a suffixed format for the mod jar names, e.g. `example-fabric`.
-        archivesName = "$rootProject.archives_name-$project.name"
+        archivesName = "$rootProject.archives_name-$project.name-$rootProject.mod_version+$rootProject.minecraft_version"
     }
 
     repositories {

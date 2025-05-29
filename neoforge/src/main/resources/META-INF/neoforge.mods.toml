@@ -23,7 +23,7 @@ side = "SERVER"
 [[dependencies.combatlog]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "[1.21.5,)"
 ordering = "NONE"
 side = "SERVER"
 

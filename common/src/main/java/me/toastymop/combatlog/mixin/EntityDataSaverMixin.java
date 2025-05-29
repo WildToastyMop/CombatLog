@@ -22,16 +22,16 @@ public abstract class EntityDataSaverMixin implements IEntityDataSaver {
     }
 
     @Inject(method = "writeNbt", at = @At("HEAD"))
-    protected void injectWriteMethod(NbtCompound nbt, CallbackInfoReturnable info) {
+    protected void injectWriteMethod(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
         if(persistentData != null) {
             nbt.put("combatLog", persistentData);
         }
     }
 
     @Inject(method = "readNbt", at = @At("HEAD"))
-    protected void injectReadMethod(NbtCompound nbt, CallbackInfo info) {
-        if(nbt.contains("combatLog", 10)) {
-            persistentData = nbt.getCompound("combatLog");
+    protected void injectReadMethod(NbtCompound nbt, CallbackInfo ci) {
+        if(nbt.contains("combatLog")) {
+            persistentData = nbt.getCompoundOrEmpty("combatLog");
         }
     }
 }

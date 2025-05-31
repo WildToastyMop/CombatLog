@@ -8,37 +8,32 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import java.util.Map;
-
-
 public class CombatTicks {
     public static void CombatTick(MinecraftServer server) {
         for (PlayerEntity player : server.getPlayerManager().getPlayerList()) {
+            IEntityDataSaver data = (IEntityDataSaver) player;
 
-            String inCombat = CombatConfig.Config.inCombat;
-            Map<String, String> variables = Map.of(
-                    "timeLeft", (String.valueOf(TagData.getTagTime((IEntityDataSaver) player) / 20))
-            );
-            for (Map.Entry<String, String> entry : variables.entrySet()) {
-                String placeholder = "{" + entry.getKey() + "}";
-                inCombat = inCombat.replace(placeholder, entry.getValue());
-            }
-            if (CombatConfig.Config.combatNotice) {
-                if ((TagData.getTagTime((IEntityDataSaver) player)) > 0) {
-                    TagData.decreaseTagTime((IEntityDataSaver) player);
-                    player.sendMessage(Text.literal(inCombat).fillStyle(Style.EMPTY.withColor(Formatting.RED)), true);
-                } else if (TagData.getCombat((IEntityDataSaver) player)) {
-                    TagData.endCombat((IEntityDataSaver) player);
-                    player.sendMessage(Text.literal(CombatConfig.Config.outCombat).fillStyle(Style.EMPTY.withColor(Formatting.GREEN)), true);
+            if (!TagData.getCombat(data)) continue;
+
+            int tagTime = TagData.getTagTime(data);
+            boolean combatNotice = CombatConfig.Config.combatNotice;
+
+            if (tagTime > 0) {
+                TagData.decreaseTagTime(data);
+                if (combatNotice) {
+                    String message = CombatConfig.Config.inCombat
+                            .replace("{timeLeft}", String.valueOf(tagTime / 20));
+                    player.sendMessage(Text.literal(message)
+                            .fillStyle(Style.EMPTY.withColor(Formatting.RED)), true);
                 }
-            }else{
-                if ((TagData.getTagTime((IEntityDataSaver) player)) > 0) {
-                    TagData.decreaseTagTime((IEntityDataSaver) player);
-                } else if (TagData.getCombat((IEntityDataSaver) player)) {
-                    TagData.endCombat((IEntityDataSaver) player);
+            }
+            else {
+                TagData.endCombat(data);
+                if (combatNotice) {
+                    player.sendMessage(Text.literal(CombatConfig.Config.outCombat)
+                            .fillStyle(Style.EMPTY.withColor(Formatting.GREEN)), true);
                 }
             }
         }
     }
-
 }

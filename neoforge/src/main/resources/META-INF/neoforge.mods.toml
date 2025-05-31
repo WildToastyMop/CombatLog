@@ -1,15 +1,15 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "MIT"
 
 [[mods]]
 modId = "combatlog"
 version = "${version}"
 displayName = "CombatLog"
-authors = "Me!"
+authors = "WildToastyMop"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+An attempt to prevent people from logging out while in combat with another player
 '''
 logoFile = "icon.png"
 

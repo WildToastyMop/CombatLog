@@ -7,9 +7,7 @@
     "DisconnectMixin",
     "EntityDamageMixin",
     "EntityDataSaverMixin",
-    "TickMixin",
     "PlayerEntityMixin",
-    "EnderPearlMixin",
     "CommandManagerMixin"
   ],
   "injectors": {

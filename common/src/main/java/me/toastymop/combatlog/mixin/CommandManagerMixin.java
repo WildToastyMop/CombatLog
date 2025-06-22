@@ -20,6 +20,7 @@ public class CommandManagerMixin {
     @Inject(method = "execute", at = @At("HEAD"), cancellable = true)
     private void onExecuteCommand(ParseResults<ServerCommandSource> parseResults, String command, CallbackInfoReturnable<Integer> cir) {
         ServerPlayerEntity player = parseResults.getContext().getSource().getPlayer();
+        if (player == null) return;
         String[] words = command.split("\\s+");
         if(CombatConfig.Config.blockedCommands.contains(words[0]) && TagData.getCombat((IEntityDataSaver) player)){
             if(CombatConfig.Config.combatNotice) {

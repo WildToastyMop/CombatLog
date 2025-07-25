@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[53,)"
+loaderVersion = "[56,)"
 #issueTrackerURL = ""
 license = "MIT"
 
@@ -18,14 +18,14 @@ logoFile = "icon.png"
 [[dependencies.combatlog]]
 modId = "forge"
 mandatory = true
-versionRange = "[53,)"
+versionRange = "[56,)"
 ordering = "NONE"
 side = "SERVER"
 
 [[dependencies.combatlog]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.21.5,)"
+versionRange = "[1.21.6,)"
 ordering = "NONE"
 side = "SERVER"
 

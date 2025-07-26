@@ -19,3 +19,4 @@ classes/
 *.launch
 Merged/
 *.log/
+.architectury-transformer/

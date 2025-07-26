@@ -64,6 +64,12 @@ public class CombatConfig {
                         case "blockedCommandMessage":
                             cfg.blockedCommandMessage = reader.nextString();
                             break;
+                        case "disconnectKill":
+                            cfg.disconnectKill = reader.nextBoolean();
+                            break;
+                        case "disconnectCommand":
+                            cfg.disconnectCommand = reader.nextString();
+                            break;
                         default:
                             reader.skipValue();
                             break;
@@ -104,6 +110,10 @@ public class CombatConfig {
                     .name("blockedCommands").value("");
             writer.comment("This is the message displayed in chat when a player attempts to use a blocked command")
                     .name("blockedCommandMessage").value(cfg.blockedCommandMessage);
+            writer.comment("This determines if disconnecting while tagged kills the player")
+                    .name("disconnectKill").value(cfg.disconnectKill);
+            writer.comment("This is a command to be run when a tagged player disconnects, use {player} to autofill their name, leave blank to disable, example \"warn {player} combatlogging\"")
+                    .name("disconnectCommand").value(cfg.disconnectCommand);
             writer.endObject();
         } catch (IOException e) {
             log.error("Failed to save config", e);
@@ -121,5 +131,7 @@ public class CombatConfig {
         public static String outCombat = "You are no longer in combat";
         public static List<String> blockedCommands = new ArrayList<>();
         public static String blockedCommandMessage = "You are in combat and cannot execute this command";
+        public static boolean disconnectKill = true;
+        public static String disconnectCommand = "";
     }
 }

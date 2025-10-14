@@ -13,8 +13,6 @@ import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameRules;
 
-import java.util.Objects;
-
 import static net.minecraft.world.GameRules.SHOW_DEATH_MESSAGES;
 
 
@@ -26,7 +24,7 @@ public class CombatDisconnect {
 
             if (CombatConfig.Config.disconnectKill) {
                 // if anyone knows how to make this less terrible please help me im begging I tried using the new damagetypes for soooo long
-                GameRules.BooleanRule gamerule = Objects.requireNonNull(server).getGameRules().get(SHOW_DEATH_MESSAGES);
+                GameRules.BooleanRule gamerule = server.getGameRules().get(SHOW_DEATH_MESSAGES);
                 Text deathMessage = Text.of(entity.getDisplayName().getString() + CombatConfig.Config.deathMessage);
                 if (gamerule.get()) {
                     gamerule.set(false, server);

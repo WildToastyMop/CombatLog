@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = "combatlog", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CombatEventHandler {
     @SubscribeEvent
-    public static void onTick(TickEvent.ServerTickEvent.Post event){
-        CombatTicks.CombatTick(event.getServer());
+    public static void onTick(TickEvent.ServerTickEvent.Post event) {
+        CombatTicks.CombatTick(event.server());
     }
 }

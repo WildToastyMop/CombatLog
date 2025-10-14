@@ -1,5 +1,5 @@
 plugins {
-    id 'dev.architectury.loom' version '1.10-SNAPSHOT' apply false
+    id 'dev.architectury.loom' version '1.11-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id "io.github.pacifistmc.forgix" version "2.0.0-SNAPSHOT.5.1"
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
@@ -44,6 +44,7 @@ subprojects {
         mappings loom.layered {
             it.mappings("net.fabricmc:yarn:$rootProject.yarn_mappings:v2")
             it.mappings("dev.architectury:yarn-mappings-patch-neoforge:$rootProject.yarn_mappings_patch_neoforge_version")
+            it.mappings("dev.architectury:yarn-mappings-patch-forge:$rootProject.yarn_mappings_patch_forge_version")
         }
         implementation "org.quiltmc.parsers:json:0.2.1"
     }

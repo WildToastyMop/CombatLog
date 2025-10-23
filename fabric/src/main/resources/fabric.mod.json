@@ -22,7 +22,7 @@
     "combatlog.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.21.6",
+    "minecraft": ">=1.21.10",
     "fabric-api": "*"
   }
 }

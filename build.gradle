@@ -11,7 +11,7 @@ architectury {
 
 forgix {
     destinationDirectory = layout.projectDirectory.dir("Merged")
-    archiveVersion = "$rootProject.mod_version+$rootProject.minecraft_version-8"
+    archiveVersion = "$rootProject.mod_version+$rootProject.minecraft_version"
 }
 
 allprojects {

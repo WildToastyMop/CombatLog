@@ -91,17 +91,17 @@ public class CombatConfig {
             writer.beginObject();
             writer.comment("The amount of time in seconds a player should be in combat")
                     .name("combatTime").value(cfg.combatTime);
-            writer.comment("Weather a player should be put in combat from just other players or all damage")
+            writer.comment("Whether a player should be put in combat from just other players or all damage")
                     .name("allDamage").value(cfg.allDamage);
-            writer.comment("Weather a player should be put in combat from mobs")
+            writer.comment("Whether a player should be put in combat from mobs")
                     .name("mobDamage").value(cfg.mobDamage);
-            writer.comment("Weather a player should be able to use their elytra while in combat, this will not make them drop from the sky it simply restricts starting elytra flight")
+            writer.comment("Whether a player should be able to use their elytra while in combat, this will not make them drop from the sky it simply restricts starting elytra flight")
                     .name("disableElytra").value(cfg.disableElytra);
-            writer.comment("Weather a player should be able to use ender pearls while in combat")
+            writer.comment("Whether a player should be able to use ender pearls while in combat")
                     .name("disablePearl").value(cfg.disablePearl);
             writer.comment("The death message that shows when a player disconnects while in combat, note that not having a space at the beginning will attach the message to the players name")
                     .name("deathMessage").value(cfg.deathMessage);
-            writer.comment("Weather a player should get a popup when they enter combat or when trying to run blocked commands")
+            writer.comment("Whether a player should get a popup when they enter combat or when trying to run blocked commands")
                     .name("combatNotice").value(cfg.combatNotice);
             writer.comment("The message that shows when a player is in combat, adding {timeLeft} will display how many seconds until combat is over")
                     .name("inCombat").value(cfg.inCombat);

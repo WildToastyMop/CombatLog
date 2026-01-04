@@ -16,38 +16,42 @@ jobs:
       - name: checkout repository
         uses: actions/checkout@v4
       
+      # Validate the wrapper is safe before proceeding
       - name: validate gradle wrapper
-        uses: gradle/actions/wrapper-validation@v4  
+        uses: gradle/actions/wrapper-validation@v4
       
-      - name: setup java 8
+      # Install all three Java versions side-by-side
+      - name: Setup Java 8
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '8.0.402+6'
+          java-version: '8'
       
-      - name: setup java 17
+      - name: Setup Java 17
         uses: actions/setup-java@v4
         with:
-          java-version: 17
-          distribution: 'microsoft'
+          distribution: 'temurin'
+          java-version: '17'
       
-      - name: setup java 21
+      # Make Java 21 the last and default version for the system PATH
+      - name: Setup Java 21 (Default)
         uses: actions/setup-java@v4
         with:
-          java-version: 21
-          distribution: 'microsoft'
+          distribution: 'temurin'
+          java-version: '21'
       
       - name: make gradle wrapper executable
-        if: ${{ runner.os != 'Windows' }}
+        if: runner.os != 'Windows'
         run: chmod +x ./gradlew
       
-      - name: build with stonecutter
-        run: |
-          if [[ "${{ runner.os }}" == "Windows" ]]; then
-            ./gradlew.bat chiseledBuild -Dorg.gradle.java.installations.auto-detect=true
-          else
-            ./gradlew chiseledBuild -Dorg.gradle.java.installations.auto-detect=true
-          fi
+      # Separate, simpler build commands to avoid shell syntax issues
+      - name: Build on Linux
+        if: runner.os != 'Windows'
+        run: ./gradlew chiseledBuild -Dorg.gradle.java.installations.auto-detect=true
+      
+      - name: Build on Windows
+        if: runner.os == 'Windows'
+        run: ./gradlew.bat chiseledBuild -Dorg.gradle.java.installations.auto-detect=true
       
       - name: capture build artifacts
         if: ${{ runner.os == 'Linux' }}

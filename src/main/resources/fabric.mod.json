@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "${id}",
+  "version": "${version}",
+  "name": "${name}",
+  "description": "",
+  "authors": [
+    "WildToastyMop"
+  ],
+  "contact": {
+  },
+  "license": "LGPLv3",
+  "icon": "assets/${id}/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.toastymop.combatlog.platforms.fabric.CombatLogFabric"
+    ]
+  },
+  "mixins": [
+    "combatlog-common.mixins.json",
+    "combatlog-fabric.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.15",
+    "fabric-api": "*",
+    "minecraft": "${minecraft}"
+  }
+}

@@ -1,0 +1,10 @@
+      {
+  "required": true,
+  "package": "me.toastymop.combatlog.platforms.neoforge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,50 +1,20 @@
-# Stonecutter combatlog
+# CombatLog
+A simple (not so much anymore) mod to try to prevent players from leaving while in combat.
 
-If you have some issues with combatlog ping me (@JavaJumper) in [Kiku's realm](https://discord.gg/TBgNUCfryS) or official fabric discord
+## Features
 
-This combatlog allows you create multiloader multversion mod using stonecutter and architectury 
+*   **Customizable Combat Timer** – Set how long players stay in combat.
+*   **Damage Source Control** – Choose if combat triggers from players, mobs, or all damage.
+*   **Restrict Movement Items** – Disable elytra flight and ender pearl use during combat.
+*   **Command Blacklist** – Block specific commands (like `/home`) while in combat.
+*   **Fully Customizable Messages** – Change every alert and death message.
+*   **Disconnect Punishment** – Choose to kill the player or run a command if they log out in combat.
 
-It is based on my CustomCursor project
+## Usage
+The jar files are on Modrinth and Curseforge as well as the actions tab on github for dev releases.
 
-## Setup
+## Config
+The config file is locating at config/combatlog-common.json5
 
-To change versions check settings.gradle.kts
-Currently default versions are these,
-but you can easily add other versions if you need that
-- 1.20.1, fabric, lexforge
-- 1.20.4, fabric, neoforge
-- 1.21.1, fabric, neoforge
-- 1.21.3, fabric, neoforge
-- 1.21.4, fabric, neoforge
-- 1.21.5, fabric, neoforge
-- 1.21.6, fabric, neoforge
-- 1.21.7, fabric, neoforge
-- 1.21.8, fabric, neoforge
-- 1.21.9, fabric, neoforge
-- 1.21.10, fabric, neoforge
-- 1.21.11, fabric, neoforge
-
-You can use c# script to automatically change all combatlog names.
-Open RenameCombatLog.cs, change names in replacements array and run "dotnet run" in this directory
-I would highly recommend to do this before opening project in your IDE, and then remove all c# related files from project
-(obj and bin folders, .csproj and script itself). Also you can remove c# stuff from .gitignore (there is comment for that)
-
-
-## Build tools usage
-
-To start current active version use runActive task
-
-For testing all versions you can use chiseledRunAllClients, it runs all possible version and loader variants (in random(?) order)
-
-Also combatlog had publishing set up, you need to specify project id for modrinth and curseforge in gradle.properties, and tokens for these sites in local.properties (it is gitignored, check local.properties.example). After that use chiseledPublishMods task
-
-## CombatLog usage
-
-CombatLog already has some code setup: 
-- common and platform specific entrypoints
-- ModPlatform interface for platform specific code
-- example config screen with mod menu integration 
-- example mixin (clientside)
-- class for simple file IO 
-- common entrypoint with logger, modid, ModPlatform object instance
-- en_us lang file
+## Build
+To build from source you'll need `IntelliJ` with the `Stonecutter Dev` and `Minecraft Development` plugins, as well as java 21, 17, and 8 installed.

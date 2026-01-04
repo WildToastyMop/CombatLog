@@ -8,6 +8,7 @@ import org.quiltmc.parsers.json.JsonWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // This class was taken from EMITrades please go check out EMI and its addons nothing but love for them <3
@@ -59,7 +60,7 @@ public class CombatConfig {
                             cfg.outCombat = reader.nextString();
                             break;
                         case "blockedCommands":
-                            cfg.blockedCommands = List.of(reader.nextString().split(","));
+                            cfg.blockedCommands = Arrays.asList(reader.nextString().split(","));
                             break;
                         case "blockedCommandMessage":
                             cfg.blockedCommandMessage = reader.nextString();
@@ -122,9 +123,9 @@ public class CombatConfig {
     public static class Config {
         public static Integer combatTime = 30;
         public static boolean allDamage = false;
-        public static boolean mobDamage = true; //fix this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public static boolean mobDamage = false;
         public static boolean disableElytra = false;
-        public static boolean disablePearl = true; //fix this!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        public static boolean disablePearl = false;
         public static String deathMessage = " has died of cowardice";
         public static boolean combatNotice = true;
         public static String inCombat = "You are in combat do not leave! {timeLeft} seconds left";

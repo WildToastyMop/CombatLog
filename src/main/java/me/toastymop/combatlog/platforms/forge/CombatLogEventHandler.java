@@ -2,16 +2,25 @@
 package me.toastymop.combatlog.platforms.forge;
 
 import me.toastymop.combatlog.CombatTicks;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+//? if =1.16.5 {
+import net.minecraftforge.fml.server.ServerLifecycleHooks;
+//?}
 
 @Mod.EventBusSubscriber(modid = "combatlog", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CombatLogEventHandler {
     @SubscribeEvent
     public static void onTick(TickEvent.ServerTickEvent event){
         if (event.phase != TickEvent.Phase.END) return;
-        CombatTicks.CombatTick(event.getServer());
+        //? if >=1.17 {
+        /*MinecraftServer server = event.getServer();
+        *///?} else {
+        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        //?}
+        CombatTicks.CombatTick(server);
     }
 }
 //?}

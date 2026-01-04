@@ -1,3 +1,4 @@
+import me.modmuss50.mpp.ReleaseType
 import java.util.*
 
 plugins {
@@ -32,8 +33,15 @@ repositories {
 dependencies {
     minecraft("com.mojang:minecraft:$minecraft")
     mappings(loom.officialMojangMappings())
-    implementation("org.quiltmc.parsers:json:0.2.1")
-    include("org.quiltmc.parsers:json:0.2.1")
+    if (minecraft == "1.16.5" && loader == "forge") {
+        "shadow"("org.quiltmc.parsers:json:0.2.1") {
+            isTransitive = false
+        }
+        implementation("org.quiltmc.parsers:json:0.2.1")
+    } else {
+        implementation("org.quiltmc.parsers:json:0.2.1")
+        include("org.quiltmc.parsers:json:0.2.1")
+    }
 
     if (loader == "fabric") {
         modImplementation("net.fabricmc:fabric-loader:${mod.dep("fabric_loader")}")
@@ -46,7 +54,6 @@ dependencies {
     }
     if (loader == "forge") {
         "forge"("net.minecraftforge:forge:${minecraft}-${mod.dep("forge_loader")}")
-
     }
     if (loader == "neoforge") {
         "neoForge"("net.neoforged:neoforge:${mod.dep("neoforge_loader")}")
@@ -84,10 +91,10 @@ publishMods {
     file = project.tasks.remapJar.get().archiveFile
     dryRun = modrinthToken == null || curseforgeToken == null
 
-    displayName = "${mod.name} ${loader.replaceFirstChar { it.uppercase() }} ${property("mod.mc_title")}-${mod.version}"
+    displayName = "${mod.name} ${loader.replaceFirstChar { it.uppercase() }} ${mod.version} ${property("mod.mc_title")}"
     version = mod.version
     changelog = rootProject.file("CHANGELOG.md").readText()
-    type = BETA
+    type = STABLE
 
     modLoaders.add(loader)
 
@@ -98,7 +105,7 @@ publishMods {
         targets.forEach(minecraftVersions::add)
         if (loader == "fabric") {
             requires("fabric-api")
-            optional("modmenu")
+            //optional("modmenu")
         }
     }
 
@@ -108,14 +115,20 @@ publishMods {
         targets.forEach(minecraftVersions::add)
         if (loader == "fabric") {
             requires("fabric-api")
-            optional("modmenu")
+            //optional("modmenu")
         }
     }
 }
 
 java {
     withSourcesJar()
-    val java = if (stonecutter.eval(minecraft, ">=1.20.5")) JavaVersion.VERSION_21 else JavaVersion.VERSION_17
+    val java = if (stonecutter.eval(minecraft, ">=1.20.5")) {
+        JavaVersion.VERSION_21
+    } else if (stonecutter.eval(minecraft, ">=1.17")) {
+        JavaVersion.VERSION_17
+    } else {
+        JavaVersion.VERSION_1_8
+    }
     targetCompatibility = java
     sourceCompatibility = java
 }
@@ -124,10 +137,21 @@ val shadowBundle: Configuration by configurations.creating {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
+//fuck you LexManos
+tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
+    configurations = if (minecraft == "1.16.5" && loader == "forge") {
+        listOf(project.configurations.getByName("shadow"))
+    } else {
+        emptyList()
+    }
 
-tasks.shadowJar {
-    configurations = listOf(shadowBundle)
     archiveClassifier = "dev-shadow"
+
+    if (minecraft == "1.16.5" && loader == "forge") {
+        relocate("org.quiltmc.parsers.json", "me.toastymop.combatlog.shadowed.jsonparser")
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 tasks.remapJar {

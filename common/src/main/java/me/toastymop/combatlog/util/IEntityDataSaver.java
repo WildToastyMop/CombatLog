@@ -1,7 +1,7 @@
 package me.toastymop.combatlog.util;
 
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
 
 public interface IEntityDataSaver {
-    NbtCompound getPersistentData();
+    CompoundTag getPersistentData();
 }

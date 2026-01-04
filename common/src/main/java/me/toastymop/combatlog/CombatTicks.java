@@ -2,15 +2,15 @@ package me.toastymop.combatlog;
 
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.Component;
+import net.minecraft.ChatFormatting;
 
 public class CombatTicks {
     public static void CombatTick(MinecraftServer server) {
-        for (PlayerEntity player : server.getPlayerManager().getPlayerList()) {
+        for (Player player : server.getPlayerList().getPlayers()) {
             IEntityDataSaver data = (IEntityDataSaver) player;
 
             if (!TagData.getCombat(data)) continue;
@@ -23,15 +23,15 @@ public class CombatTicks {
                 if (combatNotice) {
                     String message = CombatConfig.Config.inCombat
                             .replace("{timeLeft}", String.valueOf(tagTime / 20));
-                    player.sendMessage(Text.literal(message)
-                            .fillStyle(Style.EMPTY.withColor(Formatting.RED)), true);
+                    player.displayClientMessage(Component.literal(message)
+                            .withStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
                 }
             }
             else {
                 TagData.endCombat(data);
                 if (combatNotice) {
-                    player.sendMessage(Text.literal(CombatConfig.Config.outCombat)
-                            .fillStyle(Style.EMPTY.withColor(Formatting.GREEN)), true);
+                    player.displayClientMessage(Component.literal(CombatConfig.Config.outCombat)
+                            .withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)), true);
                 }
             }
         }

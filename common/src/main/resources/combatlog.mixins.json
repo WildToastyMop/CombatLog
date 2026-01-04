@@ -7,8 +7,8 @@
     "DisconnectMixin",
     "EntityDamageMixin",
     "EntityDataSaverMixin",
-    "PlayerEntityMixin",
-    "CommandManagerMixin"
+    "PlayerMixin",
+    "CommandsMixin"
   ],
   "injectors": {
     "defaultRequire": 1

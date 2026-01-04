@@ -1,6 +1,6 @@
 package me.toastymop.combatlog.mixin;
 
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.level.ServerPlayer;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -8,12 +8,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static me.toastymop.combatlog.CombatDisconnect.OnPlayerDisconnect;
 
-@Mixin(ServerPlayerEntity.class)
+@Mixin(ServerPlayer.class)
 public abstract class DisconnectMixin {
 
-    @Inject(method = "onDisconnect", at = @At("HEAD"))
+    @Inject(method = "disconnect", at = @At("HEAD"))
     private void injectDisconnectMethod(CallbackInfo ci) {
-        OnPlayerDisconnect((ServerPlayerEntity) (Object) this);
+        OnPlayerDisconnect((ServerPlayer) (Object) this);
     }
 
 }

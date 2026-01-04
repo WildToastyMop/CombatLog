@@ -5,47 +5,48 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;
+import net.minecraft.server.permissions.PermissionSet;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.command.CommandManager;
-import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.world.GameRules;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.network.chat.Component;
 
-import static net.minecraft.world.GameRules.SHOW_DEATH_MESSAGES;
+import net.minecraft.world.level.gamerules.GameRules;
+
 
 
 public class CombatDisconnect {
-    public static void OnPlayerDisconnect(ServerPlayerEntity entity) {
+    public static void OnPlayerDisconnect(ServerPlayer entity) {
         if (TagData.getCombat((IEntityDataSaver) entity)) {
-            ServerWorld world = entity.getEntityWorld();
+            ServerLevel world = entity.level();
             MinecraftServer server = world.getServer();
 
             if (CombatConfig.Config.disconnectKill) {
                 // if anyone knows how to make this less terrible please help me im begging I tried using the new damagetypes for soooo long
-                GameRules.BooleanRule gamerule = server.getGameRules().get(SHOW_DEATH_MESSAGES);
-                Text deathMessage = Text.of(entity.getDisplayName().getString() + CombatConfig.Config.deathMessage);
-                if (gamerule.get()) {
-                    gamerule.set(false, server);
-                    entity.damage(world, entity.getDamageSources().outOfWorld(), 100000);
-                    gamerule.set(true, server);
-                    server.getPlayerManager().broadcast(deathMessage, false);
+                GameRules gamerules = world.getGameRules();
+                Component deathMessage = Component.nullToEmpty(entity.getDisplayName().getString() + CombatConfig.Config.deathMessage);
+                if (gamerules.get(GameRules.SHOW_DEATH_MESSAGES)) {
+                    gamerules.set(GameRules.SHOW_DEATH_MESSAGES,false, server);
+                    entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
+                    gamerules.set(GameRules.SHOW_DEATH_MESSAGES,true, server);
+                    server.getPlayerList().broadcastSystemMessage(deathMessage, false);
                 } else {
-                    entity.damage(world, entity.getDamageSources().outOfWorld(), 100000);
+                    entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
                 }
             }
 
             String disconnectCommand = CombatConfig.Config.disconnectCommand.replace("{player}",entity.getName().getString());
             if (disconnectCommand != null && !disconnectCommand.trim().isEmpty()){
-                CommandManager manager = server.getCommandManager();
-                CommandDispatcher<ServerCommandSource> dispatcher = manager.getDispatcher();
-                ServerCommandSource commandSource = server.getCommandSource().withLevel(4);
-                ParseResults<ServerCommandSource> parseResults = dispatcher.parse(disconnectCommand,commandSource);
+                Commands manager = server.getCommands();
+                CommandDispatcher<CommandSourceStack> dispatcher = manager.getDispatcher();
+                CommandSourceStack commandSource = server.createCommandSourceStack().withPermission(PermissionSet.ALL_PERMISSIONS);
+                ParseResults<CommandSourceStack> parseResults = dispatcher.parse(disconnectCommand,commandSource);
                 try {
                     dispatcher.execute(parseResults);
                 } catch (CommandSyntaxException e) {
-                    commandSource.sendError(Text.of(e.getMessage()));
+                    commandSource.sendFailure(Component.nullToEmpty(e.getMessage()));
                 }
             }
 

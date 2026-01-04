@@ -1,0 +1,19 @@
+modLoader = "javafml"
+loaderVersion = "*"
+license = "LGPLv3"
+issueTrackerURL="https://WildToastyMop/CombatLog/issues"
+
+[[mods]]
+modId = "combatlog"
+version = "${version}"
+displayName = "${name}"
+authors = "WildToastyMop"
+description = ""
+logoFile = "assets/combatlog/icon.png"
+logoBlur = false
+
+[[mixins]]
+config = "combatlog-common.mixins.json"
+
+[[mixins]]
+config = "combatlog-neoforge.mixins.json"

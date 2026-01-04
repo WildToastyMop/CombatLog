@@ -1,12 +1,50 @@
+# Stonecutter combatlog
 
-# CombatLog
+If you have some issues with combatlog ping me (@JavaJumper) in [Kiku's realm](https://discord.gg/TBgNUCfryS) or official fabric discord
 
-A simple mod to try to prevent players from leaving while in combat 
+This combatlog allows you create multiloader multversion mod using stonecutter and architectury 
+
+It is based on my CustomCursor project
+
+## Setup
+
+To change versions check settings.gradle.kts
+Currently default versions are these,
+but you can easily add other versions if you need that
+- 1.20.1, fabric, lexforge
+- 1.20.4, fabric, neoforge
+- 1.21.1, fabric, neoforge
+- 1.21.3, fabric, neoforge
+- 1.21.4, fabric, neoforge
+- 1.21.5, fabric, neoforge
+- 1.21.6, fabric, neoforge
+- 1.21.7, fabric, neoforge
+- 1.21.8, fabric, neoforge
+- 1.21.9, fabric, neoforge
+- 1.21.10, fabric, neoforge
+- 1.21.11, fabric, neoforge
+
+You can use c# script to automatically change all combatlog names.
+Open RenameCombatLog.cs, change names in replacements array and run "dotnet run" in this directory
+I would highly recommend to do this before opening project in your IDE, and then remove all c# related files from project
+(obj and bin folders, .csproj and script itself). Also you can remove c# stuff from .gitignore (there is comment for that)
 
 
-## Usage
-In order for this mod to be as simple as possible I used architectury to manage the fabric and forge versions and used forgix to combine them in one jar. If this causes any problems feel free to build the version you need yourself and open and issue
-## Config
-Currently the mod has 3 config options combatTime, allDamage, and deathMessage. combatTime is simply how long a player should be tagged for before they can leave, allDamge is weather you want players to get tagged only from other players or every kind of damage, and deathMessage is just the message displayed when someone leaves while in combat.
-## Build
-Building this is fairly easy just download intellij community edition then install the minecraft plugin from the plugin store and the architectury plugin go to project settings and make sure the java version is set to 17 for 1.18.2 and 1.19.2 or 8-16 for 1.16.5 the let it index and his gradle on the right expand the tasks arrow find the version you want then just double click build
+## Build tools usage
+
+To start current active version use runActive task
+
+For testing all versions you can use chiseledRunAllClients, it runs all possible version and loader variants (in random(?) order)
+
+Also combatlog had publishing set up, you need to specify project id for modrinth and curseforge in gradle.properties, and tokens for these sites in local.properties (it is gitignored, check local.properties.example). After that use chiseledPublishMods task
+
+## CombatLog usage
+
+CombatLog already has some code setup: 
+- common and platform specific entrypoints
+- ModPlatform interface for platform specific code
+- example config screen with mod menu integration 
+- example mixin (clientside)
+- class for simple file IO 
+- common entrypoint with logger, modid, ModPlatform object instance
+- en_us lang file

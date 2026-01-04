@@ -5,8 +5,14 @@ import me.toastymop.combatlog.util.TagData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.network.chat.Style;
-import net.minecraft.network.chat.Component;
 import net.minecraft.ChatFormatting;
+//? if >=1.19 {
+/*import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Component;
+*///?} else {
+import net.minecraft.network.chat.TextComponent;
+//?}
+
 
 public class CombatTicks {
     public static void CombatTick(MinecraftServer server) {
@@ -23,14 +29,25 @@ public class CombatTicks {
                 if (combatNotice) {
                     String message = CombatConfig.Config.inCombat
                             .replace("{timeLeft}", String.valueOf(tagTime / 20));
-                    player.displayClientMessage(Component.literal(message)
+                    //? if >=1.19 {
+                    /*MutableComponent inCombat = Component.literal(message);
+                    *///?} else {
+                    TextComponent inCombat = new TextComponent(message);
+                    //?}
+                    player.displayClientMessage(inCombat
                             .withStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
                 }
             }
             else {
                 TagData.endCombat(data);
                 if (combatNotice) {
-                    player.displayClientMessage(Component.literal(CombatConfig.Config.outCombat)
+                    //? if >=1.19 {
+                    /*MutableComponent outCombat = Component.literal(CombatConfig.Config.outCombat);
+                     *///?} else {
+                    TextComponent outCombat = new TextComponent(CombatConfig.Config.outCombat);
+                    //?}
+
+                    player.displayClientMessage(outCombat
                             .withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)), true);
                 }
             }

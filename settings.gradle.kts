@@ -23,8 +23,8 @@ stonecutter {
             for (version in versions) vers("$version-$loader", version)
         }
         //i would recommend to use neoforge for mc > 1.20.1, i haven't tested combatlog for forge on versions higher than that
-        mc("fabric","1.19.2", "1.20.1", "1.21.1", "1.21.6", /*"1.21.9",*/ "1.21.11")
-        mc("forge","1.19.2", "1.20.1")
+        mc("fabric","1.16.5", "1.19.2", "1.20.1", "1.21.1", "1.21.6", /*"1.21.9",*/ "1.21.11")
+        mc("forge","1.16.5", "1.19.2", "1.20.1")
         //WARNING: neoforge uses mods.toml instead of neoforge.mods.toml for versions 1.20.4 (?) and earlier
         mc("neoforge",  "1.21.1",  "1.21.6", /*"1.21.9",*/ "1.21.11")
     }

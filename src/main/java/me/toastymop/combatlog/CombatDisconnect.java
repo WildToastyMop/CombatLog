@@ -5,6 +5,7 @@ import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;
+import net.minecraft.network.chat.ChatType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.CommandSourceStack;
@@ -19,7 +20,7 @@ import net.minecraft.server.permissions.PermissionSet;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
-
+import java.util.UUID;
 import static net.minecraft.world.level.GameRules.RULE_SHOWDEATHMESSAGES;
 //?}
 
@@ -61,7 +62,11 @@ public class CombatDisconnect {
                     //?}
                     //?}
                     gamerule.set(true, server);
-                    server.getPlayerList().broadcastSystemMessage(deathMessage, false);
+                    //? if >=1.19 {
+                    /*server.getPlayerList().broadcastSystemMessage(deathMessage, false);
+                    *///?} else {
+                    server.getPlayerList().broadcastMessage(deathMessage, ChatType.CHAT, UUID.randomUUID());
+                    //?}
                 //?}
                 } else {
                     //? if >1.21.5 {

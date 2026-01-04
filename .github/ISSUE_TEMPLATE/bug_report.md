@@ -27,3 +27,5 @@ Loader:  [e.g. Fabric]
 
 **Additional context**
 Add any other context about the problem here.
+
+<br>**If applicable please attach crashlog, latest log and if on (neo)forge debug log**

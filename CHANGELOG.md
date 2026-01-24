@@ -1,2 +1,2 @@
-**2.6**\
-completely replaced projects architecture and fixed various bugs
+**2.7**\
+Added config option to disable items while in combat, added two new commands, and general optimization 

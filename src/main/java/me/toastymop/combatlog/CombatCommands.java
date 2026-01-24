@@ -8,9 +8,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
 //? if >=1.21.11 {
-/*import net.minecraft.server.permissions.Permission;
+import net.minecraft.server.permissions.Permission;
 import net.minecraft.server.permissions.PermissionLevel;
-*///?}
+//?}
 
 //? if >=1.19.2 {
 import net.minecraft.commands.CommandBuildContext;
@@ -24,12 +24,12 @@ import net.minecraft.commands.CommandBuildContext;
 public class CombatCommands {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher /*? >=1.19.2 {*/, CommandBuildContext commandRegistryAccess, Commands.CommandSelection registrationEnvironment /*?}*/) {
         //? if >=1.21.11 {
-        /*dispatcher.register(Commands.literal("combatlog").requires(source -> source.permissions().hasPermission(new Permission.HasCommandLevel(PermissionLevel.ADMINS)))
+        dispatcher.register(Commands.literal("combatlog").requires(source -> source.permissions().hasPermission(new Permission.HasCommandLevel(PermissionLevel.ADMINS)))
                 .then(Commands.literal("reload").requires(source -> source.permissions().hasPermission(new Permission.HasCommandLevel(PermissionLevel.ADMINS)))
-        *///?} else {
-        dispatcher.register(Commands.literal("combatlog").requires(source -> source.hasPermission(4))
+        //?} else {
+        /*dispatcher.register(Commands.literal("combatlog").requires(source -> source.hasPermission(4))
                 .then(Commands.literal("reload").requires(source -> source.hasPermission(4))
-        //?}
+        *///?}
                         .executes(context -> {
                             CombatConfig.CONFIG = CombatConfig.load();
                             //? if >=1.19.2 {
@@ -41,12 +41,12 @@ public class CombatCommands {
                         })
                 )
                 //? if >=1.21.11 {
-                /*.then(Commands.literal("set").requires(source -> source.permissions().hasPermission(new Permission.HasCommandLevel(PermissionLevel.ADMINS)))
+                .then(Commands.literal("set").requires(source -> source.permissions().hasPermission(new Permission.HasCommandLevel(PermissionLevel.ADMINS)))
                     .then(Commands.argument("player", EntityArgument.player()).requires(source -> source.permissions().hasPermission(new Permission.HasCommandLevel(PermissionLevel.ADMINS)))
-                *///?} else {
-                .then(Commands.literal("set").requires(source -> source.hasPermission(4))
+                //?} else {
+                /*.then(Commands.literal("set").requires(source -> source.hasPermission(4))
                                 .then(Commands.argument("player", EntityArgument.player()).requires(source -> source.hasPermission(4))
-                //?}
+                *///?}
                         .executes(context -> {
                             ServerPlayer target = EntityArgument.getPlayer(context,"player");
                             CombatCheck.setCombat(target);

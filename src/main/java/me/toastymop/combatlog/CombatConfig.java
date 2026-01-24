@@ -8,10 +8,10 @@ import org.quiltmc.parsers.json.JsonReader;
 import org.quiltmc.parsers.json.JsonWriter;
 
 //? if >=1.21.11 {
-/*import net.minecraft.resources.Identifier;
-*///?} else {
-import net.minecraft.resources.ResourceLocation;
-//?}
+import net.minecraft.resources.Identifier;
+//?} else {
+/*import net.minecraft.resources.ResourceLocation;
+*///?}
 
 //? if >=1.21.6 {
 import net.minecraft.core.Holder;
@@ -157,10 +157,10 @@ public class CombatConfig {
 
         for (String s : list) {
             //? if >=1.21.11
-            /*Optional<Holder.Reference<Item>> item = BuiltInRegistries.ITEM.get(Identifier.parse(s));*/
+            Optional<Holder.Reference<Item>> item = BuiltInRegistries.ITEM.get(Identifier.parse(s));
 
             //? if >=1.21.6 && <1.21.11
-            Optional<Holder.Reference<Item>> item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(s));
+            /*Optional<Holder.Reference<Item>> item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(s));*/
 
             //? if >=1.21.6 {
             ItemStack stack = item.map(holder -> new ItemStack(holder.value())).orElse(ItemStack.EMPTY);

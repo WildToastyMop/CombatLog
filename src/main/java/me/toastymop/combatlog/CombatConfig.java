@@ -1,15 +1,31 @@
 package me.toastymop.combatlog;
 
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.quiltmc.parsers.json.JsonReader;
 import org.quiltmc.parsers.json.JsonWriter;
 
+//? if >=1.21.11 {
+/*import net.minecraft.resources.Identifier;
+*///?} else {
+import net.minecraft.resources.ResourceLocation;
+//?}
+
+//? if >=1.21.6 {
+import net.minecraft.core.Holder;
+//?}
+
+//? if >=1.20.1
+import net.minecraft.core.registries.BuiltInRegistries;
+
+//? if >=1.16.5 && <1.21.1
+/*import net.minecraft.core.Registry;*/
+
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 // This class was taken from EMITrades please go check out EMI and its addons nothing but love for them <3
 public class CombatConfig {
@@ -44,8 +60,8 @@ public class CombatConfig {
                         case "disableElytra":
                             cfg.disableElytra = reader.nextBoolean();
                             break;
-                        case "disablePearl":
-                            cfg.disablePearl = reader.nextBoolean();
+                        case "disabledItems":
+                            cfg.disabledItems = blockedItems(Arrays.asList(reader.nextString().split(",")));
                             break;
                         case "deathMessage":
                             cfg.deathMessage = reader.nextString();
@@ -97,8 +113,8 @@ public class CombatConfig {
                     .name("mobDamage").value(cfg.mobDamage);
             writer.comment("Whether a player should be able to use their elytra while in combat, this will not make them drop from the sky it simply restricts starting elytra flight")
                     .name("disableElytra").value(cfg.disableElytra);
-            writer.comment("Whether a player should be able to use ender pearls while in combat")
-                    .name("disablePearl").value(cfg.disablePearl);
+            writer.comment("This is a list of item ids to disable while in combat, use commas to separate them and leave empty to disable, only items that do something when right-clicked. example \"minecraft:firework_rocket,minecraft:dirt,minecraft:water_bucket\"")
+                    .name("disabledItems").value("");
             writer.comment("The death message that shows when a player disconnects while in combat, note that not having a space at the beginning will attach the message to the players name")
                     .name("deathMessage").value(cfg.deathMessage);
             writer.comment("Whether a player should get a popup when they enter combat or when trying to run blocked commands")
@@ -125,7 +141,7 @@ public class CombatConfig {
         public static boolean allDamage = false;
         public static boolean mobDamage = false;
         public static boolean disableElytra = false;
-        public static boolean disablePearl = false;
+        public static List<ItemStack> disabledItems = new ArrayList<>();
         public static String deathMessage = " has died of cowardice";
         public static boolean combatNotice = true;
         public static String inCombat = "You are in combat do not leave! {timeLeft} seconds left";
@@ -135,4 +151,40 @@ public class CombatConfig {
         public static boolean disconnectKill = true;
         public static String disconnectCommand = "";
     }
+
+    private static List<ItemStack> blockedItems(List<String> list){
+        List<ItemStack> finalList = new ArrayList<>();
+
+        for (String s : list) {
+            //? if >=1.21.11
+            /*Optional<Holder.Reference<Item>> item = BuiltInRegistries.ITEM.get(Identifier.parse(s));*/
+
+            //? if >=1.21.6 && <1.21.11
+            Optional<Holder.Reference<Item>> item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(s));
+
+            //? if >=1.21.6 {
+            ItemStack stack = item.map(holder -> new ItemStack(holder.value())).orElse(ItemStack.EMPTY);
+            finalList.add(stack);
+            //?}
+
+            //? if >=1.21.1 && <1.21.6 {
+            /*Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(s));
+            finalList.add(new ItemStack(item));
+            *///?}
+
+            //? if >=1.20.1 && <1.21.1 {
+            /*Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(s));
+            finalList.add(new ItemStack(item));
+            *///?}
+
+            //? if >=1.16.5 && <1.20.1 {
+            /*Item item = Registry.ITEM.get(new ResourceLocation(s));
+            finalList.add(new ItemStack(item));
+            *///?}
+
+
+        }
+
+        return finalList;
+    };
 }

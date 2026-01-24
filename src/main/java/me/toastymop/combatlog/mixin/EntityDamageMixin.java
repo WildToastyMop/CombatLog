@@ -22,20 +22,20 @@ public abstract class EntityDamageMixin extends Entity {
     }
 
     //? if >1.21.5 {
-    /*@Shadow
+    @Shadow
     public abstract boolean hurtServer(ServerLevel world, DamageSource source, float amount);
 
     @Inject(method = "hurtServer", at = @At("TAIL"))
     protected void injectCheckMethod(ServerLevel world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         CheckCombat(this);
     }
-    *///?} else {
-    @Shadow
+    //?} else {
+    /*@Shadow
     public abstract boolean hurt(DamageSource source, float amount);
 
     @Inject(method = "hurt", at = @At("TAIL"))
     protected void injectCheckMethod(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         CheckCombat(this);
     }
-    //?}
+    *///?}
 }

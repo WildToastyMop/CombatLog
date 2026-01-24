@@ -28,14 +28,14 @@ public class CombatDisconnect {
     public static void OnPlayerDisconnect(ServerPlayer entity) {
         if (TagData.getCombat((IEntityDataSaver) entity)) {
             //? if >1.21.5 {
-            /*ServerLevel world = entity.level();
-            *///?} else {
-            //? if >=1.20 {
-            /*ServerLevel world = entity.serverLevel();
-             *///?} else {
-            ServerLevel world = entity.getLevel();
-            //?}
-            //?}
+            ServerLevel world = entity.level();
+            //?} else {
+            /*//? if >=1.20 {
+            ServerLevel world = entity.serverLevel();
+             //?} else {
+            /^ServerLevel world = entity.getLevel();
+            ^///?}
+            *///?}
             MinecraftServer server = world.getServer();
 
             if (CombatConfig.Config.disconnectKill) {
@@ -53,31 +53,31 @@ public class CombatDisconnect {
                 if (gamerule.get()) {
                     gamerule.set(false, server);
                     //? if >1.21.5 {
-                    /*entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
-                     *///?} else {
-                    //? if >=1.20 {
-                    /*entity.hurt(entity.damageSources().fellOutOfWorld(), 100000);
-                     *///?} else {
-                    entity.hurt(DamageSource.OUT_OF_WORLD, 100000);
-                    //?}
-                    //?}
+                    entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
+                     //?} else {
+                    /*//? if >=1.20 {
+                    entity.hurt(entity.damageSources().fellOutOfWorld(), 100000);
+                     //?} else {
+                    /^entity.hurt(DamageSource.OUT_OF_WORLD, 100000);
+                    ^///?}
+                    *///?}
                     gamerule.set(true, server);
                     //? if >=1.19 {
-                    /*server.getPlayerList().broadcastSystemMessage(deathMessage, false);
-                    *///?} else {
-                    server.getPlayerList().broadcastMessage(deathMessage, ChatType.CHAT, UUID.randomUUID());
-                    //?}
+                    server.getPlayerList().broadcastSystemMessage(deathMessage, false);
+                    //?} else {
+                    /*server.getPlayerList().broadcastMessage(deathMessage, ChatType.CHAT, UUID.randomUUID());
+                    *///?}
                 //?}
                 } else {
                     //? if >1.21.5 {
-                    /*entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
-                    *///?} else {
-                        //? if >=1.20 {
-                        /*entity.hurt(entity.damageSources().fellOutOfWorld(), 100000);
-                        *///?} else {
-                        entity.hurt(DamageSource.OUT_OF_WORLD, 100000);
-                        //?}
-                    //?}
+                    entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
+                    //?} else {
+                        /*//? if >=1.20 {
+                        entity.hurt(entity.damageSources().fellOutOfWorld(), 100000);
+                        //?} else {
+                        /^entity.hurt(DamageSource.OUT_OF_WORLD, 100000);
+                        ^///?}
+                    *///?}
                 }
             }
 

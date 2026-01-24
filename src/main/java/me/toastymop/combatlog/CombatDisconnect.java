@@ -14,15 +14,15 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.network.chat.Component;
 
 //? if >1.21.10 {
-/*import net.minecraft.world.level.gamerules.GameRules;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.server.permissions.PermissionSet;
-*///?} else {
-import net.minecraft.world.damagesource.DamageSource;
+//?} else {
+/*import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import java.util.UUID;
 import static net.minecraft.world.level.GameRules.RULE_SHOWDEATHMESSAGES;
-//?}
+*///?}
 
 public class CombatDisconnect {
     public static void OnPlayerDisconnect(ServerPlayer entity) {
@@ -42,32 +42,32 @@ public class CombatDisconnect {
                 // if anyone knows how to make this less terrible please help me im begging I tried using the new damagetypes for soooo long
                 Component deathMessage = Component.nullToEmpty(entity.getDisplayName().getString() + CombatConfig.Config.deathMessage);
                 //? if >1.21.10 {
-                /*GameRules gamerule = world.getGameRules();
+                GameRules gamerule = world.getGameRules();
                 if (gamerule.get(GameRules.SHOW_DEATH_MESSAGES)) {
                     gamerule.set(GameRules.SHOW_DEATH_MESSAGES,false, server);
                     entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
                     gamerule.set(GameRules.SHOW_DEATH_MESSAGES,true, server);
                     server.getPlayerList().broadcastSystemMessage(deathMessage, false);
-                *///?} else {
-                GameRules.BooleanValue gamerule = server.getGameRules().getRule(RULE_SHOWDEATHMESSAGES);
+                //?} else {
+                /*GameRules.BooleanValue gamerule = server.getGameRules().getRule(RULE_SHOWDEATHMESSAGES);
                 if (gamerule.get()) {
                     gamerule.set(false, server);
                     //? if >1.21.5 {
                     entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
                      //?} else {
-                    /*//? if >=1.20 {
+                    /^//? if >=1.20 {
                     entity.hurt(entity.damageSources().fellOutOfWorld(), 100000);
                      //?} else {
-                    /^entity.hurt(DamageSource.OUT_OF_WORLD, 100000);
+                    /^¹entity.hurt(DamageSource.OUT_OF_WORLD, 100000);
+                    ¹^///?}
                     ^///?}
-                    *///?}
                     gamerule.set(true, server);
                     //? if >=1.19 {
                     server.getPlayerList().broadcastSystemMessage(deathMessage, false);
                     //?} else {
-                    /*server.getPlayerList().broadcastMessage(deathMessage, ChatType.CHAT, UUID.randomUUID());
-                    *///?}
-                //?}
+                    /^server.getPlayerList().broadcastMessage(deathMessage, ChatType.CHAT, UUID.randomUUID());
+                    ^///?}
+                *///?}
                 } else {
                     //? if >1.21.5 {
                     entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
@@ -86,10 +86,10 @@ public class CombatDisconnect {
                 Commands manager = server.getCommands();
                 CommandDispatcher<CommandSourceStack> dispatcher = manager.getDispatcher();
                 //? if >1.21.10 {
-                /*CommandSourceStack commandSource = server.createCommandSourceStack().withPermission(PermissionSet.ALL_PERMISSIONS);
-                *///?} else {
-                CommandSourceStack commandSource = server.createCommandSourceStack().withPermission(4);
-                //?}
+                CommandSourceStack commandSource = server.createCommandSourceStack().withPermission(PermissionSet.ALL_PERMISSIONS);
+                //?} else {
+                /*CommandSourceStack commandSource = server.createCommandSourceStack().withPermission(4);
+                *///?}
                 ParseResults<CommandSourceStack> parseResults = dispatcher.parse(disconnectCommand,commandSource);
                 try {
                     dispatcher.execute(parseResults);

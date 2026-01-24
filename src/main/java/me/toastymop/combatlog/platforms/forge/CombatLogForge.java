@@ -1,5 +1,5 @@
 //? if forge {
-package me.toastymop.combatlog.platforms.forge;
+/*package me.toastymop.combatlog.platforms.forge;
 
 import me.toastymop.combatlog.CombatConfig;
 import net.minecraftforge.fml.common.Mod;
@@ -10,4 +10,4 @@ public class CombatLogForge {
 		CombatConfig.CONFIG = CombatConfig.load();
 	}
 }
-//?}
+*///?}

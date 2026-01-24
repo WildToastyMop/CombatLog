@@ -9,12 +9,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 //? if >1.21.5 {
-/*import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-*///?} else {
-import net.minecraft.world.entity.Entity;
+//?} else {
+/*import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-//?}
+*///?}
 
 @Mixin(Entity.class)
 public abstract class EntityDataSaverMixin implements IEntityDataSaver {
@@ -29,7 +29,7 @@ public abstract class EntityDataSaverMixin implements IEntityDataSaver {
     }
 
     //? if >1.21.5 {
-    /*@Inject(method = "saveWithoutId", at = @At("HEAD"))
+    @Inject(method = "saveWithoutId", at = @At("HEAD"))
     protected void injectWriteMethod(ValueOutput view, CallbackInfo ci) {
         if(persistentData != null) {
             view.store("combatLog", CompoundTag.CODEC, persistentData);
@@ -40,8 +40,8 @@ public abstract class EntityDataSaverMixin implements IEntityDataSaver {
     protected void injectReadMethod(ValueInput view, CallbackInfo ci) {
         persistentData = view.read("combatlog", CompoundTag.CODEC).orElse(null);
     }
-    *///?} else {
-    @Inject(method = "saveWithoutId", at = @At("HEAD"))
+    //?} else {
+    /*@Inject(method = "saveWithoutId", at = @At("HEAD"))
     protected void injectWriteMethod(CompoundTag nbt, CallbackInfoReturnable info) {
         if(persistentData != null) {
             nbt.put("combatLog", persistentData);
@@ -54,5 +54,5 @@ public abstract class EntityDataSaverMixin implements IEntityDataSaver {
             persistentData = nbt.getCompound("combatLog");
         }
     }
-    //?}
+    *///?}
 }

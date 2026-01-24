@@ -137,7 +137,7 @@ val shadowBundle: Configuration by configurations.creating {
     isCanBeConsumed = false
     isCanBeResolved = true
 }
-//fuck you LexManos
+
 tasks.named<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar>("shadowJar") {
     configurations = if (minecraft == "1.16.5" && loader == "forge") {
         listOf(project.configurations.getByName("shadow"))

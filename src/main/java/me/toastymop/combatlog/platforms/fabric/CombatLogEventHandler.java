@@ -1,5 +1,5 @@
 //? if fabric {
-/*package me.toastymop.combatlog.platforms.fabric;
+package me.toastymop.combatlog.platforms.fabric;
 
 import me.toastymop.combatlog.CombatTicks;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
@@ -14,4 +14,4 @@ public class CombatLogEventHandler implements ServerTickEvents.EndTick{
     }
 
 }
-*///?}
+//?}

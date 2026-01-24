@@ -5,17 +5,13 @@ import me.toastymop.combatlog.util.TagData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.server.level.ServerPlayer;
 
+import java.util.List;
+
 public class CombatCheck {
-    //? if >1.21.5 {
-    /*static ItemStack enderPearl = Items.ENDER_PEARL.getDefaultInstance();
-    *///?} else {
-    static Item enderPearl = Items.ENDER_PEARL.getDefaultInstance().getItem();
-    //?}
+    public static Integer tickRate = 0;
     public static void CheckCombat(Entity entity) {
         LivingEntity target = (LivingEntity) entity;
         if (target instanceof Player) {
@@ -30,18 +26,50 @@ public class CombatCheck {
         }
 
     }
-    public static void setCombat(Player target, Player attacker ){
+    public static void setCombat(Player target, Player attacker ) {
+        //? if >=1.21.1 {
+        tickRate = (int) target.level().getServer().tickRateManager().tickrate();
+        //?} else {
+        /*tickRate = 20;
+        *///?}
         TagData.setTagTime((IEntityDataSaver) target);
         TagData.setTagTime((IEntityDataSaver) attacker);
-        if (CombatConfig.Config.disablePearl){
-            target.getCooldowns().addCooldown(enderPearl,CombatConfig.Config.combatTime * 20);
-            attacker.getCooldowns().addCooldown(enderPearl,CombatConfig.Config.combatTime * 20);
+        if (!CombatConfig.Config.disabledItems.isEmpty()){
+            setCooldowns(CombatConfig.Config.disabledItems, target, attacker);
         }
     }
-    public static void setCombat(Player target){
+    public static void setCombat(Player target) {
+        //? if >=1.21.1 {
+        tickRate = (int) target.level().getServer().tickRateManager().tickrate();
+         //?} else {
+        /*tickRate = 20;
+        *///?}
         TagData.setTagTime((IEntityDataSaver) target);
-        if (CombatConfig.Config.disablePearl){
-            target.getCooldowns().addCooldown(enderPearl,CombatConfig.Config.combatTime * 20);
+        if (!CombatConfig.Config.disabledItems.isEmpty()){
+            setCooldowns(CombatConfig.Config.disabledItems, target);
+        }
+    }
+
+    public static void setCooldowns(List<ItemStack> list, Player target, Player attacker){
+        for (ItemStack stack : list) {
+            //? if >=1.21.6 {
+            target.getCooldowns().addCooldown(stack, CombatConfig.Config.combatTime * 20);
+            attacker.getCooldowns().addCooldown(stack, CombatConfig.Config.combatTime * 20);
+            //?} else {
+            /*target.getCooldowns().addCooldown(stack.getItem(), CombatConfig.Config.combatTime * 20);
+            attacker.getCooldowns().addCooldown(stack.getItem(), CombatConfig.Config.combatTime * 20);
+            *///?}
+
+        }
+    }
+
+    public static void setCooldowns(List<ItemStack> list, Player target){
+        for (ItemStack stack : list) {
+            //? if >=1.21.6 {
+            target.getCooldowns().addCooldown(stack, CombatConfig.Config.combatTime * 20);
+            //?} else {
+            /*target.getCooldowns().addCooldown(stack.getItem(), CombatConfig.Config.combatTime * 20);
+            *///?}
         }
     }
 }

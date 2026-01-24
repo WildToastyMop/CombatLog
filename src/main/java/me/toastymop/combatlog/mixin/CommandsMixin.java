@@ -17,23 +17,23 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //? if =1.16.5 {
-import net.minecraft.Util;
-//?}
+/*import net.minecraft.Util;
+*///?}
 
 @Mixin(Commands.class)
 public class CommandsMixin {
     @Inject(method = "performCommand", at = @At("HEAD"), cancellable = true)
         //? if >1.20.1 {
-        /*private void onExecuteCommand(ParseResults<CommandSourceStack> parseResults, String command,CallbackInfo ci) {
-        *///?} else {
+        private void onExecuteCommand(ParseResults<CommandSourceStack> parseResults, String command,CallbackInfo ci) {
+        //?} else {
+        /*//? if >1.17 {
+        private void onExecuteCommand(ParseResults<CommandSourceStack> parseResults, String command, CallbackInfoReturnable<Integer> ci) {
+        //?} else {
+        /^private void onExecuteCommand(CommandSourceStack arg, String command, CallbackInfoReturnable<Integer> ci) throws CommandSyntaxException {
+        ^///?}
+        *///?}
         //? if >1.17 {
-        /*private void onExecuteCommand(ParseResults<CommandSourceStack> parseResults, String command, CallbackInfoReturnable<Integer> ci) {
-        *///?} else {
-        private void onExecuteCommand(CommandSourceStack arg, String command, CallbackInfoReturnable<Integer> ci) throws CommandSyntaxException {
-        //?}
-        //?}
-        //? if >1.17 {
-        /*ServerPlayer player = parseResults.getContext().getSource().getPlayer();
+        ServerPlayer player = parseResults.getContext().getSource().getPlayer();
         if (player == null) return;
         String[] words = command.split("\\s+");
         if(CombatConfig.Config.blockedCommands.contains(words[0]) && TagData.getCombat((IEntityDataSaver) player)){
@@ -42,8 +42,8 @@ public class CommandsMixin {
             }
             ci.cancel();
         }
-        *///?} else {
-        ServerPlayer player = arg.getPlayerOrException();
+        //?} else {
+        /*ServerPlayer player = arg.getPlayerOrException();
         if (player == null) return;
         String[] words = command.split("\\s+");
         if (words[0].charAt(0) == '/') {words[0] = words[0].substring(1);}
@@ -53,6 +53,6 @@ public class CommandsMixin {
             }
             ci.cancel();
         }
-        //?}
+        *///?}
     }
 }

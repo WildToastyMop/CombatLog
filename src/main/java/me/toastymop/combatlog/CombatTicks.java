@@ -26,7 +26,7 @@ public class CombatTicks {
 
             if (tagTime > 0) {
                 TagData.decreaseTagTime(data);
-                if (combatNotice && (tagTime % CombatCheck.tickRate) == 0) {
+                if (combatNotice && CombatCheck.tickRate > 0 && (tagTime % CombatCheck.tickRate) == 0) {
                     String message = CombatConfig.Config.inCombat
                             .replace("{timeLeft}", String.valueOf(tagTime / CombatCheck.tickRate));
                     //? if >=1.19 {

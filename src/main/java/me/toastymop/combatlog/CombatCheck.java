@@ -5,19 +5,22 @@ import me.toastymop.combatlog.util.TagData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.server.level.ServerPlayer;
+//? if > 1.16.5
+import net.minecraft.core.Holder;
 
 import java.util.List;
 
 public class CombatCheck {
     public static Integer tickRate = 0;
-    public static void CheckCombat(Entity entity) {
+    public static void CheckCombat(Entity entity, float dmg) {
         LivingEntity target = (LivingEntity) entity;
         if (target instanceof Player) {
             LivingEntity attacker = target.getLastHurtByMob();
             if ((attacker instanceof Player) && ((ServerPlayer) target).gameMode.getGameModeForPlayer().isSurvival() && ((ServerPlayer) attacker).gameMode.getGameModeForPlayer().isSurvival()) {
-                setCombat((Player) target,(Player) attacker);
+                setCombat((Player) target, (Player) attacker, dmg);
             }else if (CombatConfig.Config.allDamage && ((ServerPlayer) target).gameMode.getGameModeForPlayer().isSurvival()) {
                 setCombat((Player) target);
             } else if (CombatConfig.Config.mobDamage && (attacker instanceof LivingEntity) && ((ServerPlayer) target).gameMode.getGameModeForPlayer().isSurvival()) {
@@ -26,7 +29,7 @@ public class CombatCheck {
         }
 
     }
-    public static void setCombat(Player target, Player attacker ) {
+    public static void setCombat(Player target, Player attacker, float dmg) {
         //? if >=1.21.1 {
         tickRate = (int) target.level().getServer().tickRateManager().tickrate();
         //?} else {
@@ -34,10 +37,13 @@ public class CombatCheck {
         *///?}
         TagData.setTagTime((IEntityDataSaver) target);
         TagData.setTagTime((IEntityDataSaver) attacker);
+        TagData.updateAttacker(target, attacker, dmg);
+        TagData.updateAttacker(attacker, target, 0f);
         if (!CombatConfig.Config.disabledItems.isEmpty()){
             setCooldowns(CombatConfig.Config.disabledItems, target, attacker);
         }
     }
+
     public static void setCombat(Player target) {
         //? if >=1.21.1 {
         tickRate = (int) target.level().getServer().tickRateManager().tickrate();
@@ -50,8 +56,9 @@ public class CombatCheck {
         }
     }
 
-    public static void setCooldowns(List<ItemStack> list, Player target, Player attacker){
-        for (ItemStack stack : list) {
+    public static void setCooldowns(List<Item> list, Player target, Player attacker){
+        for (Item item : list) {
+            ItemStack stack = item != null ? new ItemStack(item) : ItemStack.EMPTY;
             //? if >=1.21.6 {
             target.getCooldowns().addCooldown(stack, CombatConfig.Config.combatTime * 20);
             attacker.getCooldowns().addCooldown(stack, CombatConfig.Config.combatTime * 20);
@@ -63,8 +70,10 @@ public class CombatCheck {
         }
     }
 
-    public static void setCooldowns(List<ItemStack> list, Player target){
-        for (ItemStack stack : list) {
+    public static void setCooldowns(List<Item> list, Player target){
+        for (Item item : list) {
+            ItemStack stack = item != null ? new ItemStack(item) : ItemStack.EMPTY;
+
             //? if >=1.21.6 {
             target.getCooldowns().addCooldown(stack, CombatConfig.Config.combatTime * 20);
             //?} else {

@@ -27,7 +27,7 @@ public abstract class EntityDamageMixin extends Entity {
 
     @Inject(method = "hurtServer", at = @At("TAIL"))
     protected void injectCheckMethod(ServerLevel world, DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        CheckCombat(this);
+        CheckCombat(this, amount);
     }
     //?} else {
     /*@Shadow
@@ -35,7 +35,7 @@ public abstract class EntityDamageMixin extends Entity {
 
     @Inject(method = "hurt", at = @At("TAIL"))
     protected void injectCheckMethod(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        CheckCombat(this);
+        CheckCombat(this, amount);
     }
     *///?}
 }

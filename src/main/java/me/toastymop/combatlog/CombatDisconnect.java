@@ -81,7 +81,9 @@ public class CombatDisconnect {
                 }
             }
 
-            String disconnectCommand = CombatConfig.Config.disconnectCommand.replace("{player}",entity.getName().getString());
+            String disconnectCommand = CombatConfig.Config.disconnectCommand
+                    .replace("{player}",entity.getName().getString())
+                    .replace("{attacker}",TagData.getAttacker((IEntityDataSaver) entity));
             if (disconnectCommand != null && !disconnectCommand.trim().isEmpty()){
                 Commands manager = server.getCommands();
                 CommandDispatcher<CommandSourceStack> dispatcher = manager.getDispatcher();

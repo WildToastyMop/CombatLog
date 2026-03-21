@@ -13,10 +13,7 @@ val loader = loom.platform.get().name.lowercase()
 
 group = mod.group
 
-version = "${mod.version}+$minecraft"
-if (minecraft == "1.21.6") {
-    version = "${mod.version}+$minecraft-10"
-};
+version = "${mod.version}+${property("mod.mc_title")}"
 
 base {
     archivesName.set("${mod.id}-$loader")

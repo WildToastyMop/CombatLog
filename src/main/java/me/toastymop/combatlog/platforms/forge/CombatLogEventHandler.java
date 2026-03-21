@@ -18,19 +18,19 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 //? if =1.16.5 {
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
+/^import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
-//?} else {
-/^import net.minecraftforge.event.server.ServerStartedEvent;
+^///?} else {
+import net.minecraftforge.event.server.ServerStartedEvent;
 
 @Mod.EventBusSubscriber(modid = "combatlog", bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CombatLogEventHandler {
     @SubscribeEvent
     //? if > 1.16.5 {
-    /^¹public static void onStart(ServerStartedEvent event) {
-    ¹^///?} else {
-    public static void onStart(FMLServerStartedEvent event) {
-    //?}
+    public static void onStart(ServerStartedEvent event) {
+    //?} else {
+    /^public static void onStart(FMLServerStartedEvent event) {
+    ^///?}
 
         CombatConfig.CONFIG = CombatConfig.load();
     }
@@ -39,10 +39,10 @@ public class CombatLogEventHandler {
     public static void onTick(TickEvent.ServerTickEvent event){
         if (event.phase != TickEvent.Phase.END) return;
         //? if >=1.17 {
-        /^¹MinecraftServer server = event.getServer();
-        ¹^///?} else {
-        MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        //?}
+        MinecraftServer server = event.getServer();
+        //?} else {
+        /^MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
+        ^///?}
         CombatTicks.CombatTick(server);
     }
     @SubscribeEvent
@@ -50,20 +50,20 @@ public class CombatLogEventHandler {
         CombatCommands.register(
                 event.getDispatcher()
                 //? if >=1.19.2 {
-                /^¹,event.getBuildContext(),
+                ,event.getBuildContext(),
                 event.getCommandSelection()
-                ¹^///?}
+                //?}
         );
     }
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
         //? if > 1.16.5 {
-        /^¹if (event.getLevel().isClientSide()) return;
+        if (event.getLevel().isClientSide()) return;
         ItemStack block = new ItemStack(event.getLevel().getBlockState(event.getPos()).getBlock().asItem());
-        ¹^///?} else {
-        if (event.getWorld().isClientSide()) return;
+        //?} else {
+        /^if (event.getWorld().isClientSide()) return;
         ItemStack block = new ItemStack(event.getWorld().getBlockState(event.getPos()).getBlock().asItem());
-        //?}
+        ^///?}
         ServerPlayer player = (ServerPlayer) event.getEntity();
         if(!TagData.getCombat((IEntityDataSaver) player)) return;
         if(CombatConfig.Config.disabledBlocks.contains(block.getItem())) {
@@ -73,4 +73,4 @@ public class CombatLogEventHandler {
     }
 
 }
-^///?}*/
+//?}*/

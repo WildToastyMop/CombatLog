@@ -125,7 +125,7 @@ public class TagData {
         ListTag attackers = nbt.getList("attackerHistory", 10);
 
         for (int i = 0; i < attackers.size(); i++) {
-            CompoundTag entry = attackers.getCompoundOrEmpty(i);
+            CompoundTag entry = attackers.getCompound(i);
             if (entry.getString("Name").equals(attacker.getName().getString())) {
                 entry.putFloat("Damage", dmg + entry.getFloat("Damage"));
                 entry.putLong("Time", player.tickCount);

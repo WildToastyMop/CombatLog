@@ -1,32 +1,35 @@
 pluginManagement {
-    repositories {
-        mavenCentral()
-        gradlePluginPortal()
-        maven("https://maven.fabricmc.net/")
-        maven("https://maven.architectury.dev")
-        maven("https://maven.minecraftforge.net")
-        maven("https://maven.neoforged.net/releases/")
-        maven("https://maven.kikugie.dev/snapshots")
-        maven("https://maven.quiltmc.org/repository/release/")
-    }
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		gradlePluginPortal()
+		maven("https://maven.fabricmc.net/") { name = "Fabric" }
+		maven("https://maven.neoforged.net/releases/") { name = "NeoForged" }
+		maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie Snapshots" }
+		maven("https://maven.kikugie.dev/releases") { name = "KikuGie Releases" }
+		maven("https://maven.parchmentmc.org") { name = "ParchmentMC" }
+		maven("https://maven.quiltmc.org/repository/release/")
+	}
+	includeBuild("build-logic")
 }
 
 plugins {
-    id("dev.kikugie.stonecutter") version "0.5"
+	id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+	id("dev.kikugie.stonecutter") version "0.9.2"
+	id("dev.kikugie.loom-back-compat") version "0.4.1"
 }
 
 stonecutter {
-    centralScript = "build.gradle.kts"
-    kotlinController = true
-    shared {
-        fun mc(loader: String, vararg versions: String) {
-            for (version in versions) vers("$version-$loader", version)
-        }
-        mc("fabric", "1.21.11", "1.21.6", "1.21.1", "1.20.1", "1.19.2", "1.16.5")
-        mc("forge", "1.20.1", "1.19.2", "1.16.5")
-        mc("neoforge", "1.21.11", "1.21.6", "1.21.1")
-    }
-    create(rootProject)
-}
+	create(rootProject) {
+		fun match(version: String, vararg loaders: String) =
+			loaders.forEach { version("$version-$it", version).buildscript = "build.$it.gradle.kts" }
 
-rootProject.name = "CombatLog"
+		match("26.1.2", "fabric", "neoforge")
+		match("1.21.11", "fabric", "neoforge")
+		match("1.21.10", "fabric", "neoforge")
+		match("1.21.1", "fabric", "neoforge")
+		match("1.20.1", "fabric", "forge")
+
+		vcsVersion = "26.1.2-fabric"
+	}
+}

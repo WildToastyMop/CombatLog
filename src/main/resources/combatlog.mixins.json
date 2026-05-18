@@ -1,0 +1,17 @@
+{
+  "package": "me.toastymop.combatlog.mixin",
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "${java}",
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "mixins": [
+    "DisconnectMixin",
+    "EntityDamageMixin",
+    "EntityDataSaverMixin",
+    "PlayerMixin",
+    "CommandsMixin"
+  ],
+  "client": []
+}

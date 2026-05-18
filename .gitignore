@@ -1,47 +1,55 @@
-# gradle
-
-.gradle/
+.env
+.gradle
+.kotlin
+.cache/
 build/
-out/
-classes/
-
-# eclipse
-
-*.launch
-
-# idea
-
-.idea/
-*.iml
-*.ipr
-*.iws
-
-# vscode
-
-.settings/
-.vscode/
-bin/
-.classpath
-.project
-
-# macos
-
-*.DS_Store
-
-# fabric
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
 
 run/
 
-# java
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
 
-hs_err_*.log
-replay_*.log
-*.hprof
-*.jfr
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
 
-# tokens
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
 
-local.properties
+### VS Code ###
+.vscode/
 
-.architectury-transformer\debug.log
-.architectury-transformer/debug.log
+### Mac OS ###
+.DS_Store
+
+### Jetbrains ###
+.idea/
+!.idea/icon.png
+!.idea/externalDependencies.xml
+!.idea/icon.svg
+!.idea/runConfigurations/Run_Active_Client.xml
+!.idea/runConfigurations/Run_Active_Server.xml

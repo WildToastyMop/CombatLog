@@ -66,7 +66,7 @@ postprocessors = [
 # See https://www.conventionalcommits.org
 conventional_commits = true
 # Exclude commits that do not match the conventional commits specification.
-filter_unconventional = false
+filter_unconventional = true
 # Split commits on newlines, treating each line as an individual commit.
 split_commits = true
 # An array of regex based parsers to modify commit messages prior to further processing.
@@ -91,7 +91,7 @@ commit_parsers = [
 	{ message = ".*\\((ci|cd|dx)(/.*)?\\).*", group = "Development/Tooling" },
 
 	# Fallback
-	{ message = ".*", group = "Other" },
+	#{ message = ".*", group = "Other" },
 ]
 # Exclude commits that are not matched by any commit parser.
 filter_commits = true

@@ -12,7 +12,7 @@ import org.quiltmc.parsers.json.JsonWriter;
 //? if >=1.21.11 {
 import net.minecraft.resources.Identifier;
 //?} else {
-/*import net.minecraft.resources.ResourceLocation;
+/*import net.minecraft.resources.Identifier;
 *///?}
 
 //? if >=1.21.6 {
@@ -23,7 +23,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 
 //? if >=1.16.5 && <1.21.1
-/*import net.minecraft.core.Registry;*/
+//import net.minecraft.core.Registry;
 
 import java.io.File;
 import java.io.IOException;
@@ -149,11 +149,11 @@ public class CombatConfig {
                     .name("mobDamage").value(cfg.mobDamage);
             writer.comment("Whether a player should be able to use their elytra while in combat, this will not make them drop from the sky it simply restricts starting elytra flight")
                     .name("disableElytra").value(cfg.disableElytra);
-            writer.comment("This is a list of item ids to disable while in combat, use commas to separate them and leave empty to disable, only items that do something when right-clicked. example \"minecraft:firework_rocket,minecraft:dirt,minecraft:water_bucket\"")
+            writer.comment("This is a list of item ids to disable while in combat, use commas to separate them and leave empty to disable, only items that do something when right-clicked. example \"minecraft:firework_rocket,minecraft:ender_pearl,minecraft:water_bucket\"")
                     .name("disabledItems").value(plainItems);
             writer.comment("This is a list of block ids to disable while in combat, use commas to separate them and leave empty to disable, only blocks that do something when right-clicked. example \"minecraft:chest,minecraft:oak_door,waystones:waystone\"")
                     .name("disabledBlocks").value(plainBlocks);
-            writer.comment("The death message that shows when a player disconnects while in combat, note that not having a space at the beginning will attach the message to the players name")
+            writer.comment("The death message that shows when a player disconnects while in combat, use {player} to autofill their name")
                     .name("deathMessage").value(cfg.deathMessage);
             writer.comment("Whether a player should get a popup when they enter combat or when trying to run blocked commands")
                     .name("combatNotice").value(cfg.combatNotice);
@@ -171,7 +171,7 @@ public class CombatConfig {
                     .name("disconnectKill").value(cfg.disconnectKill);
             writer.comment("This determines if the last person to attack or the person with the most damage gets credit, use \"time\" or \"damage\"")
                     .name("attackerCredit").value(cfg.attackerCredit);
-            writer.comment("This is a command to be run when a tagged player disconnects, use {player} to autofill their name, leave blank to disable, example \"warn {player} combatlogging\"")
+            writer.comment("This is a command to be run when a tagged player disconnects, use {player} and {attacker} to autofill their names, leave blank to disable, example \"warn {player} combatlogging\"")
                     .name("disconnectCommand").value(cfg.disconnectCommand);
             writer.endObject();
         } catch (IOException e) {
@@ -185,7 +185,7 @@ public class CombatConfig {
         public static boolean disableElytra = false;
         public static List<Item> disabledItems = new ArrayList<>();
         public static List<Item> disabledBlocks = new ArrayList<>();
-        public static String deathMessage = " has died of cowardice";
+        public static String deathMessage = "{player} has died of cowardice";
         public static boolean combatNotice = true;
         public static String inCombat = "You are in combat do not leave! {timeLeft} seconds left";
         public static String outCombat = "You are no longer in combat";
@@ -212,11 +212,11 @@ public class CombatConfig {
                     //? if >= 1.21.11
                     Identifier id = BuiltInRegistries.ITEM.getKey(item);
 
-                    //? if >=1.20.1 && <=1.21.6
-                    /*ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);*/
+                    //? if >=1.20.1 && <=1.21.10
+                    //Identifier id = BuiltInRegistries.ITEM.getKey(item);
 
                     //? if >=1.16.5 && <1.20.1
-                    /*ResourceLocation id = Registry.ITEM.getKey(item);*/
+                    /*Identifier id = Registry.ITEM.getKey(item);*/
 
                     if (namespace.equals(id.getNamespace()) && item != Items.AIR) {
                         finalList.add(item);
@@ -227,24 +227,24 @@ public class CombatConfig {
                 Optional<Holder.Reference<Item>> item = BuiltInRegistries.ITEM.get(Identifier.parse(s));
 
                 //? if >=1.21.6 && <1.21.11
-                /*Optional<Holder.Reference<Item>> item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(s));*/
+                //Optional<Holder.Reference<Item>> item = BuiltInRegistries.ITEM.get(Identifier.parse(s));
 
                 //? if >=1.21.6 {
                 finalList.add(item.map(Holder.Reference::value).orElse(null));
                 //?}
 
                 //? if >=1.21.1 && <1.21.6 {
-                /*Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(s));
+                /*Item item = BuiltInRegistries.ITEM.get(Identifier.parse(s));
                 finalList.add(item);
                 *///?}
 
                 //? if >=1.20.1 && <1.21.1 {
-                /*Item item = BuiltInRegistries.ITEM.get(new ResourceLocation(s));
+                /*Item item = BuiltInRegistries.ITEM.get(new Identifier(s));
                 finalList.add(item);
                 *///?}
 
                 //? if >=1.16.5 && <1.20.1 {
-                /*Item item = Registry.ITEM.get(new ResourceLocation(s));
+                /*Item item = Registry.ITEM.get(new Identifier(s));
                 finalList.add(item);
                 *///?}
 

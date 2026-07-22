@@ -34,8 +34,14 @@ public class CombatTicks {
                     //?} else {
                     /*TextComponent inCombat = new TextComponent(message);
                     *///?}
-                    player.displayClientMessage(inCombat
+
+					//? if <=1.21.11 {
+                    /*player.displayClientMessage(inCombat
                             .withStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
+					*///?} else {
+					player.sendOverlayMessage(inCombat
+							.withStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+					//?}
                 }
             } else {
                 TagData.endCombat(data);
@@ -46,8 +52,13 @@ public class CombatTicks {
                     /*TextComponent outCombat = new TextComponent(CombatConfig.Config.outCombat);
                     *///?}
 
-                    player.displayClientMessage(outCombat
+					//? if <=1.21.11 {
+                    /*player.displayClientMessage(outCombat
                             .withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)), true);
+					*///?} else {
+					player.sendOverlayMessage(outCombat
+							.withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
+					//?}
                 }
             }
         }

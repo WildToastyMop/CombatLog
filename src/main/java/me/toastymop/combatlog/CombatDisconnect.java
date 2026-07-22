@@ -40,7 +40,12 @@ public class CombatDisconnect {
 
             if (CombatConfig.Config.disconnectKill) {
                 // if anyone knows how to make this less terrible please help me im begging I tried using the new damagetypes for soooo long
-                Component deathMessage = Component.nullToEmpty(entity.getDisplayName().getString() + CombatConfig.Config.deathMessage);
+
+				String deathmsg = CombatConfig.Config.deathMessage
+						.replace("{player}",entity.getName().getString())
+						.replace("{attacker}",TagData.getAttacker((IEntityDataSaver) entity));
+
+                Component deathMessage = Component.nullToEmpty(deathmsg);
                 //? if >1.21.10 {
                 GameRules gamerule = world.getGameRules();
                 if (gamerule.get(GameRules.SHOW_DEATH_MESSAGES)) {

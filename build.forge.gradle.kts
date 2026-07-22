@@ -17,7 +17,24 @@ platform {
 	loader = "forge"
 	dependencies {
 		required("minecraft") {
-			forgeLikeVersionRange = prop("deps.minecraft")
+			val main = prop("deps.minecraft")
+			val additional = project.sc.properties
+				.rawOrNull("publish", "additionalVersions")
+				?.to<List<String>>()
+				.orEmpty()
+
+			if (additional.isEmpty()) {
+				forgeLikeVersionRange = main
+			} else {
+				val all = (listOf(main) + additional).distinct()
+				val sorted = all.sortedWith(compareBy { version ->
+					version.split(".").joinToString(".") { it.padStart(5, '0') }
+				})
+
+				val min = sorted.first()
+				val max = sorted.last()
+				forgeLikeVersionRange = "[$min,$max]"
+			}
 		}
 		required("forge") {
 			forgeLikeVersionRange.set("[1,)")

@@ -20,7 +20,24 @@ platform {
 	loader = "fabric"
 	dependencies {
 		required("minecraft") {
-			fabricLikeVersionRange = prop("deps.minecraft")
+			val main = prop("deps.minecraft")
+			val additional = project.sc.properties
+				.rawOrNull("publish", "additionalVersions")
+				?.to<List<String>>()
+				.orEmpty()
+
+			if (additional.isEmpty()) {
+				fabricLikeVersionRange = main
+			} else {
+				val all = (listOf(main) + additional).distinct()
+				val sorted = all.sortedWith(compareBy { version ->
+					version.split(".").joinToString(".") { it.padStart(5, '0') }
+				})
+
+				val min = sorted.first()
+				val max = sorted.last()
+				fabricLikeVersionRange = ">=$min <=$max"
+			}
 		}
 		required("fabric-api") {
 			slug("fabric-api")

@@ -75,8 +75,14 @@ public class CombatConfig {
                         case "disableElytra":
                             cfg.disableElytra = reader.nextBoolean();
                             break;
+						case "disablePearl":
+							cfg.disablePearl = reader.nextBoolean();
+							break;
                         case "disabledItems":
                             plainItems = reader.nextString();
+							if (Config.disablePearl && !plainItems.contains("ender_pearl")) {
+								plainItems = plainItems.isEmpty() ? "ender_pearl" : plainItems + ",ender_pearl";
+							}
                             cfg.disabledItems = findItems(Arrays.asList(plainItems.split(",")));
                             break;
                         case "disabledBlocks":
@@ -122,7 +128,7 @@ public class CombatConfig {
                 reader.endObject();
 
                 Set<String> requiredKeys = Set.of(
-                        "combatTime", "allDamage", "mobDamage", "selfDamage", "fireDamage", "disableElytra",
+                        "combatTime", "allDamage", "mobDamage", "selfDamage", "fireDamage", "disableElytra", "disablePearl",
                         "disabledItems", "disabledBlocks", "deathMessage", "combatNotice",
                         "inCombat", "outCombat", "blockedCommands", "blockedCommandMessage",
                         "disabledBlocksMessage", "disconnectKill", "attackerCredit", "disconnectCommand"
@@ -159,6 +165,8 @@ public class CombatConfig {
 					.name("fireDamage").value(cfg.fireDamage);
             writer.comment("Whether a player should be able to use their elytra while in combat, this will not make them drop from the sky it simply restricts starting elytra flight")
                     .name("disableElytra").value(cfg.disableElytra);
+			writer.comment("Whether a player should be able to use ender pearls in combat")
+					.name("disablePearl").value(cfg.disablePearl);
             writer.comment("This is a list of item ids to disable while in combat, use commas to separate them and leave empty to disable, only items that do something when right-clicked. example \"minecraft:firework_rocket,minecraft:ender_pearl,minecraft:water_bucket\"")
                     .name("disabledItems").value(plainItems);
             writer.comment("This is a list of block ids to disable while in combat, use commas to separate them and leave empty to disable, only blocks that do something when right-clicked. example \"minecraft:chest,minecraft:oak_door,waystones:waystone\"")
@@ -195,6 +203,7 @@ public class CombatConfig {
 		public static boolean selfDamage = true;
 		public static boolean fireDamage = true;
         public static boolean disableElytra = false;
+		public static boolean disablePearl = false;
         public static List<Item> disabledItems = new ArrayList<>();
         public static List<Item> disabledBlocks = new ArrayList<>();
         public static String deathMessage = "{player} has died of cowardice";

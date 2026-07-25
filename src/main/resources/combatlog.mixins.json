@@ -2,7 +2,7 @@
   "package": "me.toastymop.combatlog.mixin",
   "required": true,
   "minVersion": "0.8",
-  "compatibilityLevel": "${java}",
+  "compatibilityLevel": "JAVA_21",
   "injectors": {
     "defaultRequire": 1
   },
@@ -11,7 +11,8 @@
     "EntityDamageMixin",
     "EntityDataSaverMixin",
     "PlayerMixin",
-    "CommandsMixin"
+    "CommandsMixin",
+    "EnderpearlMixin"
   ],
   "client": []
 }

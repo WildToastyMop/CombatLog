@@ -66,6 +66,12 @@ public class CombatConfig {
                         case "mobDamage":
                             cfg.mobDamage = reader.nextBoolean();
                             break;
+						case "selfDamage":
+							cfg.selfDamage = reader.nextBoolean();
+							break;
+						case "fireDamage":
+							cfg.fireDamage = reader.nextBoolean();
+							break;
                         case "disableElytra":
                             cfg.disableElytra = reader.nextBoolean();
                             break;
@@ -116,7 +122,7 @@ public class CombatConfig {
                 reader.endObject();
 
                 Set<String> requiredKeys = Set.of(
-                        "combatTime", "allDamage", "mobDamage", "disableElytra",
+                        "combatTime", "allDamage", "mobDamage", "selfDamage", "fireDamage", "disableElytra",
                         "disabledItems", "disabledBlocks", "deathMessage", "combatNotice",
                         "inCombat", "outCombat", "blockedCommands", "blockedCommandMessage",
                         "disabledBlocksMessage", "disconnectKill", "attackerCredit", "disconnectCommand"
@@ -147,6 +153,10 @@ public class CombatConfig {
                     .name("allDamage").value(cfg.allDamage);
             writer.comment("Whether a player should be put in combat from mobs")
                     .name("mobDamage").value(cfg.mobDamage);
+			writer.comment("Whether a player should be put in combat from hurting themselves")
+					.name("selfDamage").value(cfg.selfDamage);
+			writer.comment("Whether a player should be put in combat from targeted fire damage (fire aspect)")
+					.name("fireDamage").value(cfg.fireDamage);
             writer.comment("Whether a player should be able to use their elytra while in combat, this will not make them drop from the sky it simply restricts starting elytra flight")
                     .name("disableElytra").value(cfg.disableElytra);
             writer.comment("This is a list of item ids to disable while in combat, use commas to separate them and leave empty to disable, only items that do something when right-clicked. example \"minecraft:firework_rocket,minecraft:ender_pearl,minecraft:water_bucket\"")
@@ -182,6 +192,8 @@ public class CombatConfig {
         public static Integer combatTime = 30;
         public static boolean allDamage = false;
         public static boolean mobDamage = false;
+		public static boolean selfDamage = true;
+		public static boolean fireDamage = true;
         public static boolean disableElytra = false;
         public static List<Item> disabledItems = new ArrayList<>();
         public static List<Item> disabledBlocks = new ArrayList<>();

@@ -2,6 +2,7 @@ package me.toastymop.combatlog;
 
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;
+import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -19,6 +20,10 @@ public class CombatCheck {
         LivingEntity target = (LivingEntity) entity;
         if (target instanceof Player) {
             LivingEntity attacker = target.getLastHurtByMob();
+
+			if (!CombatConfig.Config.selfDamage){ if (attacker == target) { return; }}
+			if (!CombatConfig.Config.fireDamage){ if (target.getLastDamageSource().is(DamageTypeTags.IS_FIRE)) { return; }}
+
             if ((attacker instanceof Player) && ((ServerPlayer) target).gameMode.getGameModeForPlayer().isSurvival() && ((ServerPlayer) attacker).gameMode.getGameModeForPlayer().isSurvival()) {
                 setCombat((Player) target, (Player) attacker, dmg);
             }else if (CombatConfig.Config.allDamage && ((ServerPlayer) target).gameMode.getGameModeForPlayer().isSurvival()) {

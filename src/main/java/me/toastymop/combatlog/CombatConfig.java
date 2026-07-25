@@ -120,6 +120,9 @@ public class CombatConfig {
                         case "disconnectCommand":
                             cfg.disconnectCommand = reader.nextString();
                             break;
+						case "combatCommand":
+							cfg.combatCommand = reader.nextString();
+							break;
                         default:
                             reader.skipValue();
                             break;
@@ -131,7 +134,7 @@ public class CombatConfig {
                         "combatTime", "allDamage", "mobDamage", "selfDamage", "fireDamage", "disableElytra", "disablePearl",
                         "disabledItems", "disabledBlocks", "deathMessage", "combatNotice",
                         "inCombat", "outCombat", "blockedCommands", "blockedCommandMessage",
-                        "disabledBlocksMessage", "disconnectKill", "attackerCredit", "disconnectCommand"
+                        "disabledBlocksMessage", "disconnectKill", "attackerCredit", "disconnectCommand", "combatCommand"
                 );
 
                 if (!foundKeys.containsAll(requiredKeys)) {
@@ -191,6 +194,8 @@ public class CombatConfig {
                     .name("attackerCredit").value(cfg.attackerCredit);
             writer.comment("This is a command to be run when a tagged player disconnects, use {player} and {attacker} to autofill their names, leave blank to disable, example \"warn {player} combatlogging\"")
                     .name("disconnectCommand").value(cfg.disconnectCommand);
+			writer.comment("This is a command to be run when a player is put into combat, use {player} to autofill their name, and {tagTime} for the duration of combat, runs on BOTH players every time they take damage NOT just the start, leave blank to disable, example \"effect give {player} glowing {tagtime} \"")
+					.name("combatCommand").value(cfg.combatCommand);
             writer.endObject();
         } catch (IOException e) {
             log.error("Failed to save config", e);
@@ -216,6 +221,7 @@ public class CombatConfig {
         public static boolean disconnectKill = true;
         public static String attackerCredit = "time";
         public static String disconnectCommand = "";
+		public static String combatCommand = "";
     }
 
     private static List<Item> findItems(List<String> list){

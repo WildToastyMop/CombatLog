@@ -86,9 +86,7 @@ public class CombatDisconnect {
                 }
             }
 
-            String disconnectCommand = CombatConfig.Config.disconnectCommand
-                    .replace("{player}",entity.getName().getString())
-                    .replace("{attacker}",TagData.getAttacker((IEntityDataSaver) entity));
+            String disconnectCommand = CombatConfig.Config.disconnectCommand;
             if (disconnectCommand != null && !disconnectCommand.trim().isEmpty()){
                 Commands manager = server.getCommands();
                 CommandDispatcher<CommandSourceStack> dispatcher = manager.getDispatcher();
@@ -97,9 +95,12 @@ public class CombatDisconnect {
                 //?} else {
                 /*CommandSourceStack commandSource = server.createCommandSourceStack().withPermission(4);
                 *///?}
-                ParseResults<CommandSourceStack> parseResults = dispatcher.parse(disconnectCommand,commandSource);
+                disconnectCommand = disconnectCommand
+                        .replace("{player}", entity.getName().getString())
+                        .replace("{attacker}", TagData.getAttacker((IEntityDataSaver) entity));
+                CommandSourceStack silent = commandSource.withSuppressedOutput();
                 try {
-                    dispatcher.execute(parseResults);
+                    dispatcher.execute(dispatcher.parse(disconnectCommand, silent));
                 } catch (CommandSyntaxException e) {
                     commandSource.sendFailure(Component.nullToEmpty(e.getMessage()));
                 }

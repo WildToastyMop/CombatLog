@@ -47,7 +47,7 @@ public class CombatTicks {
 					/*String name = entry.getString("Name");
 					*///?}
 					ServerPlayer attacker = server.getPlayerList().getPlayerByName(name);
-					if (attacker != null && TagData.getCombat((IEntityDataSaver) attacker)) {
+					if (attacker != null && !attacker.isDeadOrDying() && TagData.getCombat((IEntityDataSaver) attacker)) {
 						anyStillFighting = true;
 						break;
 					}

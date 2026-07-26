@@ -52,7 +52,7 @@ public class CombatTicks {
 						break;
 					}
 				}
-				if (!anyStillFighting) {
+				if (!anyStillFighting && !attackers.isEmpty()) {
 					TagData.endCombat(data);
 					if (combatNotice) {
 						//? if >=1.19 {

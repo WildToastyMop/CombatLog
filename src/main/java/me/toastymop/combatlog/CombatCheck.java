@@ -30,7 +30,7 @@ public class CombatCheck {
             LivingEntity attacker = target.getLastHurtByMob();
 
 			if (!CombatConfig.Config.selfDamage){ if (attacker == target) { return; }}
-			if (!CombatConfig.Config.fireDamage){ if (target.getLastDamageSource().is(DamageTypeTags.IS_FIRE)) { return; }}
+			if (!CombatConfig.Config.fireDamage){ if (target.getLastDamageSource() != null && target.getLastDamageSource().is(DamageTypeTags.IS_FIRE)) { return; }}
 
             if ((attacker instanceof Player) && ((ServerPlayer) target).gameMode.getGameModeForPlayer().isSurvival() && ((ServerPlayer) attacker).gameMode.getGameModeForPlayer().isSurvival()) {
                 setCombat((Player) target, (Player) attacker, dmg);

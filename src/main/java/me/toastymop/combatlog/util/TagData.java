@@ -70,10 +70,11 @@ public class TagData {
     public static void updateAttacker(Player player, Player attacker, float dmg) {
         CompoundTag nbt = ((IEntityDataSaver)player).getPersistentData();
         ListTag attackers = nbt.getListOrEmpty("attackerHistory");
+        String attackerName = attacker.getName().getString();
 
-        for (int i = 0; i < attackers.size(); i++) {
+        for (int i = 0, size = attackers.size(); i < size; i++) {
             CompoundTag entry = attackers.getCompoundOrEmpty(i);
-            if (entry.getStringOr("Name","").equals(attacker.getName().getString())) {
+            if (entry.getStringOr("Name","").equals(attackerName)) {
                 entry.putFloat("Damage", dmg + entry.getFloatOr("Damage",0f));
                 entry.putLong("Time", player.tickCount);
                 return;
@@ -85,24 +86,30 @@ public class TagData {
     public static String getAttacker(IEntityDataSaver player) {
         CompoundTag persistentData = player.getPersistentData();
         ListTag attackers = persistentData.getListOrEmpty("attackerHistory");
+        if (attackers.isEmpty()) return "";
 
-        CompoundTag prevCompound = new CompoundTag();
-        for (int i = 0; i < attackers.size(); i++) {
+        boolean byDamage = "damage".equals(CombatConfig.Config.attackerCredit);
+        int bestIndex = -1;
+        long maxTime = -1L;
+        float maxDamage = -1.0f;
+
+        for (int i = 0, size = attackers.size(); i < size; i++) {
             CompoundTag entry = attackers.getCompoundOrEmpty(i);
-            if (CombatConfig.Config.attackerCredit.equals("time")) {
-                Long time = entry.getLongOr("Time",0L);
-                if (time > prevCompound.getLongOr("Time",0L)) {
-                    prevCompound = entry;
+            if (byDamage) {
+                float damage = entry.getFloatOr("Damage", 0f);
+                if (bestIndex == -1 || damage > maxDamage) {
+                    maxDamage = damage;
+                    bestIndex = i;
                 }
-            }
-            if (CombatConfig.Config.attackerCredit.equals("damage")) {
-                Float time = entry.getFloatOr("Damage",0f);
-                if (time > prevCompound.getFloatOr("Damage",0f)) {
-                    prevCompound = entry;
+            } else {
+                long time = entry.getLongOr("Time", 0L);
+                if (bestIndex == -1 || time > maxTime) {
+                    maxTime = time;
+                    bestIndex = i;
                 }
             }
         }
-        return prevCompound.getStringOr("Name","");
+        return bestIndex >= 0 ? attackers.getCompoundOrEmpty(bestIndex).getStringOr("Name", "") : "";
     }
      //?} else {
     /*public static void addAttacker(Player player, Player attacker, float dmg) {
@@ -123,10 +130,11 @@ public class TagData {
     public static void updateAttacker(Player player, Player attacker, float dmg) {
         CompoundTag nbt = ((IEntityDataSaver)player).getPersistentData();
         ListTag attackers = nbt.getList("attackerHistory", 10);
+        String attackerName = attacker.getName().getString();
 
-        for (int i = 0; i < attackers.size(); i++) {
+        for (int i = 0, size = attackers.size(); i < size; i++) {
             CompoundTag entry = attackers.getCompound(i);
-            if (entry.getString("Name").equals(attacker.getName().getString())) {
+            if (entry.getString("Name").equals(attackerName)) {
                 entry.putFloat("Damage", dmg + entry.getFloat("Damage"));
                 entry.putLong("Time", player.tickCount);
                 return;
@@ -138,24 +146,30 @@ public class TagData {
     public static String getAttacker(IEntityDataSaver player) {
         CompoundTag persistentData = player.getPersistentData();
         ListTag attackers = persistentData.getList("attackerHistory", 10);
+        if (attackers.isEmpty()) return "";
 
-        CompoundTag prevCompound = new CompoundTag();
-        for (int i = 0; i < attackers.size(); i++) {
+        boolean byDamage = "damage".equals(CombatConfig.Config.attackerCredit);
+        int bestIndex = -1;
+        long maxTime = -1L;
+        float maxDamage = -1.0f;
+
+        for (int i = 0, size = attackers.size(); i < size; i++) {
             CompoundTag entry = attackers.getCompound(i);
-            if (CombatConfig.Config.attackerCredit.equals("time")) {
-                Long time = entry.getLong("Time");
-                if (time > prevCompound.getLong("Time")) {
-                    prevCompound = entry;
+            if (byDamage) {
+                float damage = entry.getFloat("Damage");
+                if (bestIndex == -1 || damage > maxDamage) {
+                    maxDamage = damage;
+                    bestIndex = i;
                 }
-            }
-            if (CombatConfig.Config.attackerCredit.equals("damage")) {
-                Float time = entry.getFloat("Damage");
-                if (time > prevCompound.getFloat("Damage")) {
-                    prevCompound = entry;
+            } else {
+                long time = entry.getLong("Time");
+                if (bestIndex == -1 || time > maxTime) {
+                    maxTime = time;
+                    bestIndex = i;
                 }
             }
         }
-        return prevCompound.getString("Name");
+        return bestIndex >= 0 ? attackers.getCompound(bestIndex).getString("Name") : "";
     }
     *///?}
 }

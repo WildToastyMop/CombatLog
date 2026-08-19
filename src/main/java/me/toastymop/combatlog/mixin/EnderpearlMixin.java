@@ -20,8 +20,9 @@ public abstract class EnderpearlMixin {
 
 	@Inject(method = "onHit", at = @At("HEAD"), cancellable = true)
 	private void injectPearlConfigMethod(CallbackInfo ci) {
+		if (!CombatConfig.Config.disablePearl) return;
 		Entity owner = ((net.minecraft.world.entity.projectile.Projectile)(Object)this).getOwner();
-		if (owner != null && TagData.getCombat((IEntityDataSaver) owner) && CombatConfig.Config.disablePearl){
+		if (owner != null && TagData.getCombat((IEntityDataSaver) owner)){
 			((Entity) (Object) this).discard();
 			ci.cancel();
 		}

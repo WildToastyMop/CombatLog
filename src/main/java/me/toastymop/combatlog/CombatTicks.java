@@ -8,11 +8,15 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.MinecraftServer;
 
+import java.util.List;
+
 import static me.toastymop.combatlog.CombatNotice.displayNotice;
 
 public class CombatTicks {
     public static void CombatTick(MinecraftServer server) {
-        for (Player player : server.getPlayerList().getPlayers()) {
+        List<ServerPlayer> players = server.getPlayerList().getPlayers();
+        for (int p = 0, pCount = players.size(); p < pCount; p++) {
+            ServerPlayer player = players.get(p);
             IEntityDataSaver data = (IEntityDataSaver) player;
 
             if (!TagData.getCombat(data)) continue;
@@ -27,7 +31,7 @@ public class CombatTicks {
 				/*ListTag attackers = persistentData.getList("attackerHistory", 10);
 				*///?}
 				boolean anyStillFighting = false;
-				for (int i = 0; i < attackers.size(); i++) {
+				for (int i = 0, aCount = attackers.size(); i < aCount; i++) {
 					//? if >1.21.5 {
 					CompoundTag entry = attackers.getCompoundOrEmpty(i);
 					//?} else {
@@ -46,17 +50,17 @@ public class CombatTicks {
 				}
 				if (!anyStillFighting && !attackers.isEmpty()) {
 					TagData.endCombat(data);
-					displayNotice((ServerPlayer) player,0,true);
+					displayNotice(player,0,true);
 					continue;
 				}
 			}
 
             if (tagTime > 0) {
                 TagData.decreaseTagTime(data);
-				displayNotice((ServerPlayer) player,tagTime,false);
+				displayNotice(player,tagTime,false);
             } else {
                 TagData.endCombat(data);
-				displayNotice((ServerPlayer) player,0,true);
+				displayNotice(player,0,true);
             }
         }
     }

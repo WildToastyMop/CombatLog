@@ -125,27 +125,31 @@ public class CombatCheck {
     }
 
     public static void setCooldowns(List<Item> list, Player target, Player attacker){
-        for (Item item : list) {
+        int duration = CombatConfig.Config.combatTime * 20;
+        for (int i = 0, size = list.size(); i < size; i++) {
+            Item item = list.get(i);
             ItemStack stack = item != null ? new ItemStack(item) : ItemStack.EMPTY;
             //? if >=1.21.6 {
-            target.getCooldowns().addCooldown(stack, CombatConfig.Config.combatTime * 20);
-            attacker.getCooldowns().addCooldown(stack, CombatConfig.Config.combatTime * 20);
+            target.getCooldowns().addCooldown(stack, duration);
+            attacker.getCooldowns().addCooldown(stack, duration);
             //?} else {
-            /*target.getCooldowns().addCooldown(stack.getItem(), CombatConfig.Config.combatTime * 20);
-            attacker.getCooldowns().addCooldown(stack.getItem(), CombatConfig.Config.combatTime * 20);
+            /*target.getCooldowns().addCooldown(stack.getItem(), duration);
+            attacker.getCooldowns().addCooldown(stack.getItem(), duration);
             *///?}
 
         }
     }
 
     public static void setCooldowns(List<Item> list, Player target){
-        for (Item item : list) {
+        int duration = CombatConfig.Config.combatTime * 20;
+        for (int i = 0, size = list.size(); i < size; i++) {
+            Item item = list.get(i);
             ItemStack stack = item != null ? new ItemStack(item) : ItemStack.EMPTY;
 
             //? if >=1.21.6 {
-            target.getCooldowns().addCooldown(stack, CombatConfig.Config.combatTime * 20);
+            target.getCooldowns().addCooldown(stack, duration);
             //?} else {
-            /*target.getCooldowns().addCooldown(stack.getItem(), CombatConfig.Config.combatTime * 20);
+            /*target.getCooldowns().addCooldown(stack.getItem(), duration);
             *///?}
         }
     }

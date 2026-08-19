@@ -1,5 +1,6 @@
 package me.toastymop.combatlog.mixin;
 
+import me.toastymop.combatlog.CombatConfig;
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;
 import net.minecraft.world.entity.Entity;
@@ -20,7 +21,7 @@ public abstract class EnderpearlMixin {
 	@Inject(method = "onHit", at = @At("HEAD"), cancellable = true)
 	private void injectPearlConfigMethod(CallbackInfo ci) {
 		Entity owner = ((net.minecraft.world.entity.projectile.Projectile)(Object)this).getOwner();
-		if (owner != null && TagData.getCombat((IEntityDataSaver) owner)){
+		if (owner != null && TagData.getCombat((IEntityDataSaver) owner) && CombatConfig.Config.disablePearl){
 			((Entity) (Object) this).discard();
 			ci.cancel();
 		}

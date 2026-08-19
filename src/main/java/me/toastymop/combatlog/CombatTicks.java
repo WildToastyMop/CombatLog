@@ -7,15 +7,8 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.network.chat.Style;
-import net.minecraft.ChatFormatting;
-//? if >=1.19 {
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.Component;
-//?} else {
-/*import net.minecraft.network.chat.TextComponent;
-*///?}
 
+import static me.toastymop.combatlog.CombatNotice.displayNotice;
 
 public class CombatTicks {
     public static void CombatTick(MinecraftServer server) {
@@ -25,7 +18,6 @@ public class CombatTicks {
             if (!TagData.getCombat(data)) continue;
 
             int tagTime = TagData.getTagTime(data);
-            boolean combatNotice = CombatConfig.Config.combatNotice;
 
 			if (tagTime % 20 == 0) {
 				CompoundTag persistentData = (data).getPersistentData();
@@ -54,60 +46,17 @@ public class CombatTicks {
 				}
 				if (!anyStillFighting && !attackers.isEmpty()) {
 					TagData.endCombat(data);
-					if (combatNotice) {
-						//? if >=1.19 {
-						MutableComponent outCombat = Component.literal(CombatConfig.Config.outCombat);
-						//?} else {
-						/*TextComponent outCombat = new TextComponent(CombatConfig.Config.outCombat);
-						*///?}
-						//? if <=1.21.11 {
-						/*player.displayClientMessage(outCombat
-								.withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)), true);
-						*///?} else {
-						player.sendOverlayMessage(outCombat
-								.withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
-						//?}
-					}
+					displayNotice((ServerPlayer) player,0,true);
 					continue;
 				}
 			}
 
             if (tagTime > 0) {
                 TagData.decreaseTagTime(data);
-                if (combatNotice && CombatCheck.tickRate > 0 && (tagTime % CombatCheck.tickRate) == 0) {
-                    String message = CombatConfig.Config.inCombat
-                            .replace("{timeLeft}", String.valueOf(tagTime / CombatCheck.tickRate));
-                    //? if >=1.19 {
-                    MutableComponent inCombat = Component.literal(message);
-                    //?} else {
-                    /*TextComponent inCombat = new TextComponent(message);
-                    *///?}
-
-					//? if <=1.21.11 {
-                    /*player.displayClientMessage(inCombat
-                            .withStyle(Style.EMPTY.withColor(ChatFormatting.RED)), true);
-					*///?} else {
-					player.sendOverlayMessage(inCombat
-							.withStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
-					//?}
-                }
+				displayNotice((ServerPlayer) player,tagTime,false);
             } else {
                 TagData.endCombat(data);
-                if (combatNotice) {
-                    //? if >=1.19 {
-                    MutableComponent outCombat = Component.literal(CombatConfig.Config.outCombat);
-                     //?} else {
-                    /*TextComponent outCombat = new TextComponent(CombatConfig.Config.outCombat);
-                    *///?}
-
-					//? if <=1.21.11 {
-                    /*player.displayClientMessage(outCombat
-                            .withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)), true);
-					*///?} else {
-					player.sendOverlayMessage(outCombat
-							.withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN)));
-					//?}
-                }
+				displayNotice((ServerPlayer) player,0,true);
             }
         }
     }

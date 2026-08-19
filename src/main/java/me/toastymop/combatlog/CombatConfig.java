@@ -95,6 +95,9 @@ public class CombatConfig {
                         case "combatNotice":
                             cfg.combatNotice = reader.nextBoolean();
                             break;
+						case "noticeType":
+							cfg.noticeType = reader.nextString();
+							break;
                         case "inCombat":
                             cfg.inCombat = reader.nextString();
                             break;
@@ -132,7 +135,7 @@ public class CombatConfig {
 
                 Set<String> requiredKeys = Set.of(
                         "combatTime", "allDamage", "mobDamage", "selfDamage", "fireDamage", "disableElytra", "disablePearl",
-                        "disabledItems", "disabledBlocks", "deathMessage", "combatNotice",
+                        "disabledItems", "disabledBlocks", "deathMessage", "combatNotice", "noticeType",
                         "inCombat", "outCombat", "blockedCommands", "blockedCommandMessage",
                         "disabledBlocksMessage", "disconnectKill", "attackerCredit", "disconnectCommand", "combatCommand"
                 );
@@ -178,6 +181,8 @@ public class CombatConfig {
                     .name("deathMessage").value(cfg.deathMessage);
             writer.comment("Whether a player should get a popup when they enter combat or when trying to run blocked commands")
                     .name("combatNotice").value(cfg.combatNotice);
+			writer.comment("Whether the combat notice should appear above the hotbar or as a bossbar use \"hotbar\" or \"bossbar\"")
+					.name("noticeType").value(cfg.noticeType);
             writer.comment("The message that shows when a player is in combat, adding {timeLeft} will display how many seconds until combat is over")
                     .name("inCombat").value(cfg.inCombat);
             writer.comment("The message that shows when a player exits combat")
@@ -213,6 +218,7 @@ public class CombatConfig {
         public static List<Item> disabledBlocks = new ArrayList<>();
         public static String deathMessage = "{player} has died of cowardice";
         public static boolean combatNotice = true;
+		public static String noticeType = "hotbar";
         public static String inCombat = "You are in combat do not leave! {timeLeft} seconds left";
         public static String outCombat = "You are no longer in combat";
         public static List<String> blockedCommands = new ArrayList<>();

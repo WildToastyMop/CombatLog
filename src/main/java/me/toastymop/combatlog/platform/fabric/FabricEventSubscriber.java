@@ -31,10 +31,9 @@ public class FabricEventSubscriber implements ServerTickEvents.EndTick{
 
 	public InteractionResult onUseBlock(Player player, Level world, net.minecraft.world.InteractionHand hand, BlockHitResult hitResult) {
 		if (world.isClientSide()) return InteractionResult.PASS;
-		ItemStack block = new ItemStack(world.getBlockState(hitResult.getBlockPos()).getBlock().asItem());
-		if(!TagData.getCombat((IEntityDataSaver) player)) return InteractionResult.PASS;
+		if (CombatConfig.Config.disabledBlocks.isEmpty() || !TagData.getCombat((IEntityDataSaver) player)) return InteractionResult.PASS;
 		//if(CombatConfig.Config.disabledBlocks.stream().anyMatch(disableStack -> disableStack == block.getItem())) {
-		if(CombatConfig.Config.disabledBlocks.contains(block.getItem())) {
+		if(CombatConfig.Config.disabledBlocks.contains(world.getBlockState(hitResult.getBlockPos()).getBlock().asItem())) {
 			//? if >1.17 {
 			((ServerPlayer)player).sendSystemMessage(Component.nullToEmpty(CombatConfig.Config.disabledBlocksMessage).copy().withStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
 			//?} else

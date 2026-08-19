@@ -38,12 +38,15 @@ public class CombatDisconnect {
             *///?}
             MinecraftServer server = world.getServer();
 
+            String playerName = entity.getName().getString();
+            String attackerName = TagData.getAttacker((IEntityDataSaver) entity);
+
             if (CombatConfig.Config.disconnectKill) {
                 // if anyone knows how to make this less terrible please help me im begging I tried using the new damagetypes for soooo long
 
 				String deathmsg = CombatConfig.Config.deathMessage
-						.replace("{player}",entity.getName().getString())
-						.replace("{attacker}",TagData.getAttacker((IEntityDataSaver) entity));
+						.replace("{player}", playerName)
+						.replace("{attacker}", attackerName);
 
                 Component deathMessage = Component.nullToEmpty(deathmsg);
                 //? if >1.21.10 {
@@ -96,8 +99,8 @@ public class CombatDisconnect {
                 /*CommandSourceStack commandSource = server.createCommandSourceStack().withPermission(4);
                 *///?}
                 disconnectCommand = disconnectCommand
-                        .replace("{player}", entity.getName().getString())
-                        .replace("{attacker}", TagData.getAttacker((IEntityDataSaver) entity));
+                        .replace("{player}", playerName)
+                        .replace("{attacker}", attackerName);
                 CommandSourceStack silent = commandSource.withSuppressedOutput();
                 try {
                     dispatcher.execute(dispatcher.parse(disconnectCommand, silent));

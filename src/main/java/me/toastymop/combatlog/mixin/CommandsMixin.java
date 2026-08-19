@@ -33,21 +33,25 @@ public class CommandsMixin {
         ^///?}
         *///?}
         //? if >1.17 {
+        if (CombatConfig.Config.blockedCommands.isEmpty()) return;
         ServerPlayer player = parseResults.getContext().getSource().getPlayer();
-        if (player == null) return;
-        String[] words = command.split("\\s+");
-        if(CombatConfig.Config.blockedCommands.contains(words[0]) && TagData.getCombat((IEntityDataSaver) player)){
+        if (player == null || !TagData.getCombat((IEntityDataSaver) player)) return;
+        int spaceIdx = command.indexOf(' ');
+        String firstWord = spaceIdx == -1 ? command : command.substring(0, spaceIdx);
+        if(CombatConfig.Config.blockedCommands.contains(firstWord)){
             if(CombatConfig.Config.combatNotice) {
                 player.sendSystemMessage(Component.nullToEmpty(CombatConfig.Config.blockedCommandMessage).copy().withStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
             }
             ci.cancel();
         }
         //?} else {
-        /*ServerPlayer player = arg.getPlayerOrException();
-        if (player == null) return;
-        String[] words = command.split("\\s+");
-        if (words[0].charAt(0) == '/') {words[0] = words[0].substring(1);}
-        if(CombatConfig.Config.blockedCommands.contains(words[0]) && TagData.getCombat((IEntityDataSaver) player)){
+        /*if (CombatConfig.Config.blockedCommands.isEmpty()) return;
+        ServerPlayer player = arg.getPlayerOrException();
+        if (player == null || !TagData.getCombat((IEntityDataSaver) player)) return;
+        int spaceIdx = command.indexOf(' ');
+        String firstWord = spaceIdx == -1 ? command : command.substring(0, spaceIdx);
+        if (!firstWord.isEmpty() && firstWord.charAt(0) == '/') {firstWord = firstWord.substring(1);}
+        if(CombatConfig.Config.blockedCommands.contains(firstWord)){
             if(CombatConfig.Config.combatNotice) {
                 player.sendMessage(Component.nullToEmpty(CombatConfig.Config.blockedCommandMessage).copy().withStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);
             }

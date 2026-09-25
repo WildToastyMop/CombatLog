@@ -24,7 +24,6 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 public class ForgeEventSubscriber {
 	@SubscribeEvent
 	public static void onStart(ServerStartedEvent event) {
-
 		CombatConfig.CONFIG = CombatConfig.load();
 	}
 

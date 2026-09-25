@@ -6,6 +6,7 @@ import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
 import me.toastymop.combatlog.CombatConfig;
 import me.toastymop.combatlog.CombatCommands;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 //? if >=1.19.2 {
@@ -19,6 +20,9 @@ public class FabricEntrypoint implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		CombatConfig.CONFIG = CombatConfig.load();
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			CombatConfig.CONFIG = CombatConfig.load();
+		});
 		ServerTickEvents.END_SERVER_TICK.register(FabricEventSubscriber.INSTANCE);
 		UseBlockCallback.EVENT.register(FabricEventSubscriber.INSTANCE::onUseBlock);
 		//? if >=1.19.2 {

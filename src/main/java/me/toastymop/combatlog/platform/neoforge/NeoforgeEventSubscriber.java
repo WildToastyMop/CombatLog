@@ -4,6 +4,7 @@ package me.toastymop.combatlog.platform.neoforge;
 
 /*import me.toastymop.combatlog.CombatCheck;
 import me.toastymop.combatlog.CombatConfig;
+import me.toastymop.combatlog.CombatNotice;
 import me.toastymop.combatlog.CombatTicks;
 import me.toastymop.combatlog.CombatCommands;
 import me.toastymop.combatlog.util.IEntityDataSaver;
@@ -18,6 +19,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.tick.ServerTickEvent;
 
@@ -31,6 +33,12 @@ public class NeoforgeEventSubscriber {
     @SubscribeEvent
     public static void onTick(ServerTickEvent.Post event) {
         CombatTicks.CombatTick(event.getServer());
+    }
+    @SubscribeEvent
+    public static void onJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            CombatNotice.destroyBossBar(player);
+        }
     }
     @SubscribeEvent
     public static void onRegisterCommands(RegisterCommandsEvent event) {

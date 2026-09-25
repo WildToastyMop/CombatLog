@@ -4,6 +4,7 @@ package me.toastymop.combatlog.platform.forge;
 
 /*import me.toastymop.combatlog.CombatCommands;
 import me.toastymop.combatlog.CombatConfig;
+import me.toastymop.combatlog.CombatNotice;
 import me.toastymop.combatlog.CombatTicks;
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;
@@ -16,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -26,13 +28,18 @@ public class ForgeEventSubscriber {
 	public static void onStart(ServerStartedEvent event) {
 		CombatConfig.CONFIG = CombatConfig.load();
 	}
-
 	@SubscribeEvent
 	public static void onTick(TickEvent.ServerTickEvent event){
 		if (event.phase != TickEvent.Phase.END) return;
 		MinecraftServer server = event.getServer();
 		CombatTicks.CombatTick(server);
 	}
+	@SubscribeEvent
+    public static void onJoin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            CombatNotice.destroyBossBar(player);
+        }
+    }
 	@SubscribeEvent
 	public static void onRegisterCommands(RegisterCommandsEvent event) {
 		CombatCommands.register(

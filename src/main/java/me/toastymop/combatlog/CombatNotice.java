@@ -4,17 +4,21 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
-import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.bossevents.CustomBossEvent;
 import net.minecraft.server.bossevents.CustomBossEvents;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.BossEvent;
-
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+
+//? if >=1.21.11 {
+import net.minecraft.resources.Identifier;
+//?} else {
+/*import net.minecraft.resources.Identifier;
+*///?}
 
 import static me.toastymop.combatlog.CombatConfig.Config.combatTime;
 import static me.toastymop.combatlog.CombatConfig.Config.noticeType;
@@ -83,15 +87,38 @@ public class CombatNotice {
 					@Override
 					public void run() {
 						server.execute(() -> {
-							event.removeAllPlayers();
-							bossManager.remove(event);
+							destroyBossBar(player);
 						});
 					}
 				}, 3000);
 			}
 		}
 	}
+	public static void destroyBossBar(ServerPlayer player) {
+		//? if >=1.20 {
+		MinecraftServer server = player.level().getServer();
+		//?} else {
+		/*MinecraftServer server = player.getLevel().getServer();*/
+		//?}
 
+		CustomBossEvents bossManager = server.getCustomBossEvents();
 
+		//? if >=1.21.11 {
+		Identifier bossID = Identifier.tryParse("combatlog:" + player.getStringUUID());
+		//?} else {
+		/*Identifier bossID = Identifier.tryParse("combatlog:" + player.getStringUUID());
+		*///?}
 
+		if (bossID == null) {
+			return;
+		}
+
+		CustomBossEvent event = bossManager.get(bossID);
+		if (event == null) {
+			return;
+		}
+
+		event.removeAllPlayers();
+		bossManager.remove(event);
+	}
 }

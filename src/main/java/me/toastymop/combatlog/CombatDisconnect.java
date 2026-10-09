@@ -31,10 +31,11 @@ public class CombatDisconnect {
             String attackerName = TagData.getAttacker((IEntityDataSaver) entity);
 
             if (CombatConfig.Config.disconnectKill) {
+                ServerPlayer attacker = attackerName.isEmpty() ? null : server.getPlayerList().getPlayerByName(attackerName);
                 //? if >1.21.5 {
-                entity.hurtServer(world, CombatDamage.source(world), Float.MAX_VALUE);
+                entity.hurtServer(world, CombatDamage.source(world, attacker), Float.MAX_VALUE);
                 //?} else {
-                /*entity.hurt(CombatDamage.source(world), Float.MAX_VALUE);
+                /*entity.hurt(CombatDamage.source(world, attacker), Float.MAX_VALUE);
                 *///?}
             }
 

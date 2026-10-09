@@ -7,18 +7,19 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.entity.LivingEntity;
 
 public class CombatDamage {
     public static final ResourceKey<DamageType> COMBAT_LOG = ResourceKey.create(Registries.DAMAGE_TYPE,
             Identifier.tryParse("combatlog:combat_log"));
 
-    public static DamageSource source(ServerLevel world) {
+    public static DamageSource source(ServerLevel world, LivingEntity attacker) {
         //? if >=1.21 {
         Holder<DamageType> type = world.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE).getOrThrow(COMBAT_LOG);
         //?} else {
         /*Holder<DamageType> type = world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(COMBAT_LOG);
         *///?}
-        return new DamageSource(type);
+        return attacker == null ? new DamageSource(type) : new DamageSource(type, attacker);
     }
 
     public static boolean isCombatLog(DamageSource source) {

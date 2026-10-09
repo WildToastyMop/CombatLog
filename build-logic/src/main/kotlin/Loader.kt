@@ -1,16 +1,12 @@
 @file:Suppress("unused")
 
 import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 import kotlinx.serialization.json.putJsonObject
-import net.peanuuutz.tomlkt.Toml
+import me.modmuss50.mpp.platforms.modrinth.ModrinthEnvironment
 import org.gradle.api.NamedDomainObjectContainer
 import java.util.*
-
-private val JSON = Json { prettyPrint = true; encodeDefaults = true; explicitNulls = false }
-private val TOML = Toml { }
 
 sealed class Loader(val id: String) {
 	abstract val modManifestPath: String
@@ -49,6 +45,15 @@ sealed class Loader(val id: String) {
 				description = ctx.description,
 				icon = "assets/icon.png",
 				license = ctx.licenseName,
+				environment = when (ctx.environment) {
+					ModrinthEnvironment.CLIENT_ONLY, ModrinthEnvironment.SINGLEPLAYER_ONLY -> "client"
+
+					ModrinthEnvironment.DEDICATED_SERVER_ONLY -> "server"
+
+					ModrinthEnvironment.SERVER_ONLY, ModrinthEnvironment.SERVER_ONLY_CLIENT_OPTIONAL,
+					ModrinthEnvironment.CLIENT_ONLY_SERVER_OPTIONAL, ModrinthEnvironment.CLIENT_AND_SERVER,
+					ModrinthEnvironment.CLIENT_OR_SERVER_PREFERS_BOTH, ModrinthEnvironment.CLIENT_OR_SERVER -> "*"
+				},
 				accessWidener = "aw/${ctx.currentMcVersion}.accesswidener",
 				entrypoints = mapOf(
 					"main" to listOf("${ctx.modGroup}.${ctx.modId}.platform.fabric.FabricEntrypoint"),
@@ -94,6 +99,7 @@ sealed class Loader(val id: String) {
 			val manifest = ForgeManifest(
 				license = ctx.licenseName,
 				issueTrackerURL = ctx.issuesUrl,
+				clientSideOnly = !ctx.environmentPhysicalServer,
 				mods = listOf(
 					ForgeMod(
 						modId = ctx.modId,
@@ -102,6 +108,7 @@ sealed class Loader(val id: String) {
 						displayURL = ctx.homepageUrl,
 						modUrl = ctx.homepageUrl,
 						logoFile = "assets/icon.png",
+						iconFile = "assets/icon.png", // NeoForge 26.2 +
 						authors = ctx.authors.joinToString(", "),
 						credits = "${ctx.authors.joinToString(", ")} Contributors: ${ctx.contributors.joinToString(", ")}",
 						description = ctx.description

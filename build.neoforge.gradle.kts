@@ -4,9 +4,6 @@ plugins {
 }
 
 stonecutter {
-	val (version, loader) = current.project.split('-', limit = 2)
-	properties.tags(version, loader)
-
 	replacements.string(current.parsed >= "1.21.11") {
 		replace("ResourceLocation", "Identifier")
 		replace("location()", "identifier()")
@@ -17,24 +14,7 @@ platform {
 	loader = "neoforge"
 	dependencies {
 		required("minecraft") {
-			val main = prop("deps.minecraft")
-			val additional = project.sc.properties
-				.rawOrNull("publish", "additionalVersions")
-				?.to<List<String>>()
-				.orEmpty()
-
-			if (additional.isEmpty()) {
-				forgeLikeVersionRange = main
-			} else {
-				val all = (listOf(main) + additional).distinct()
-				val sorted = all.sortedWith(compareBy { version ->
-					version.split(".").joinToString(".") { it.padStart(5, '0') }
-				})
-
-				val min = sorted.first()
-				val max = sorted.last()
-				forgeLikeVersionRange = "[$min,$max]"
-			}
+			forgeLikeVersionRange = prop("deps.minecraft")
 		}
 		required("neoforge") {
 			forgeLikeVersionRange.set("[1,)")
@@ -54,16 +34,20 @@ neoForge {
 	}
 
 	runs {
+		val devJvmArgs = propsList("mod", "dev_jvm_args") +
+			propsList("mod", "dev_jvm_args_mixin_debug")
 		register("client") {
 			client()
 			gameDirectory = file("run/")
 			ideName = "NeoForge Client (${stonecutter.current.version})"
 			programArgument("--username=Dev")
+			jvmArguments.addAll(devJvmArgs)
 		}
 		register("server") {
 			server()
 			gameDirectory = file("run/")
 			ideName = "NeoForge Server (${stonecutter.current.version})"
+			jvmArguments.addAll(devJvmArgs)
 		}
 	}
 

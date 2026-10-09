@@ -9,6 +9,10 @@ gradlePlugin {
 			id = "mod-platform"
 			implementationClass = "ModPlatformPlugin"
 		}
+		register("modRoot") {
+			id = "mod-root"
+			implementationClass = "ModRootPlugin"
+		}
 	}
 }
 

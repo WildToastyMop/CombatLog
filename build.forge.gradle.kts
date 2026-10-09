@@ -4,9 +4,6 @@ plugins {
 }
 
 stonecutter {
-	val (version, loader) = current.project.split('-', limit = 2)
-	properties.tags(version, loader)
-
 	replacements.string(current.parsed >= "1.21.11") {
 		replace("ResourceLocation", "Identifier")
 		replace("location()", "identifier()")
@@ -17,24 +14,7 @@ platform {
 	loader = "forge"
 	dependencies {
 		required("minecraft") {
-			val main = prop("deps.minecraft")
-			val additional = project.sc.properties
-				.rawOrNull("publish", "additionalVersions")
-				?.to<List<String>>()
-				.orEmpty()
-
-			if (additional.isEmpty()) {
-				forgeLikeVersionRange = main
-			} else {
-				val all = (listOf(main) + additional).distinct()
-				val sorted = all.sortedWith(compareBy { version ->
-					version.split(".").joinToString(".") { it.padStart(5, '0') }
-				})
-
-				val min = sorted.first()
-				val max = sorted.last()
-				forgeLikeVersionRange = "[$min,$max]"
-			}
+			forgeLikeVersionRange = prop("deps.minecraft")
 		}
 		required("forge") {
 			forgeLikeVersionRange.set("[1,)")
@@ -51,17 +31,21 @@ legacyForge {
 		rootProject.file("src/main/resources/aw/${sc.current.version}.cfg")
 	)
 
+	val devJvmArgs = propsList("mod", "dev_jvm_args") +
+		propsList("mod", "dev_jvm_args_mixin_debug")
 	runs {
 		register("client") {
 			client()
 			gameDirectory = file("run/")
 			ideName = "Forge Client (${sc.current.version})"
 			programArgument("--username=Dev")
+			jvmArguments.addAll(devJvmArgs)
 		}
 		register("server") {
 			server()
 			gameDirectory = file("run/")
 			ideName = "Forge Server (${sc.current.version})"
+			jvmArguments.addAll(devJvmArgs)
 		}
 	}
 

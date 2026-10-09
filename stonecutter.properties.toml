@@ -1,21 +1,43 @@
-loomx.loom_version="1.16-SNAPSHOT"
+loomx.loom_version = "1.18-SNAPSHOT"
 
-mod.id = "combatlog"
-mod.name = "CombatLog"
-mod.group = "me.toastymop"
-mod.version = "2.8.4"
-mod.channel_tag = ""
-mod.description = "This mod tries to prevent people from combat logging on a server."
-mod.authors = ["WildToastyMop"]
-mod.contributors = []
-mod.inception_year = "2026"
-mod.license.name = "MIT"
-mod.license.url = "https://opensource.org/licenses/MIT"
-mod.license.dist = "repo"
-mod.sources_url = "https://github.com/WildToastyMop/CombatLog"
-mod.homepage_url = "https://github.com/WildToastyMop/CombatLog"
-mod.issues_url = "https://github.com/WildToastyMop/CombatLog/issues"
-mod.discord_url = ""
+[mod]
+id = "combatlog"
+name = "CombatLog"
+group = "me.toastymop"
+version = "2.8.4"
+channel_tag = ""
+description = "This mod tries to prevent people from combat logging on a server."
+authors = ["WildToastyMop"]
+contributors = []
+inception_year = "2026"
+license.name = "MIT"
+license.url = "https://opensource.org/licenses/MIT"
+license.dist = "repo"
+environment = "server_only"
+sources_url = "https://github.com/WildToastyMop/CombatLog"
+homepage_url = "https://github.com/WildToastyMop/CombatLog"
+issues_url = "https://github.com/WildToastyMop/CombatLog/issues"
+discord_url = ""
+dev_jvm_args = [
+	"-XX:+IgnoreUnrecognizedVMOptions",
+	"-XX:+UseZGC",
+	"-XX:+HeapDumpOnOutOfMemoryError",
+	"-XX:HeapDumpPath=heapdump.hprof",
+	"-XX:+ShowCodeDetailsInExceptionMessages",
+	"-XX:+UseCompactObjectHeaders",
+	"-XX:+AlwaysPreTouch",
+	"-XX:+UseStringDeduplication",
+	"-Dfile.encoding=UTF-8"
+]
+dev_jvm_args_mixin_debug = [
+	"-Dmixin.env.remapRefMap=true",
+	"-Dmixin.debug.verbose=true",
+	"-Dmixin.debug.verify=true",
+	"-Dmixin.debug.countInjections=true",
+	"-Dmixin.debug=true",
+	"-Dmixin.debug.export=true"
+]
+
 [[mod.pom.developers]]
 id = "wildtoastymop"
 name = "WildToastyMop"

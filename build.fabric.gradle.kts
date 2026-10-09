@@ -4,9 +4,6 @@ plugins {
 }
 
 stonecutter {
-	val (version, loader) = current.project.split('-', limit = 2)
-	properties.tags(version, loader)
-
 	replacements.string(current.parsed >= "1.21.11") {
 		replace("ResourceLocation", "Identifier")
 		replace("location()", "identifier()")
@@ -20,24 +17,7 @@ platform {
 	loader = "fabric"
 	dependencies {
 		required("minecraft") {
-			val main = prop("deps.minecraft")
-			val additional = project.sc.properties
-				.rawOrNull("publish", "additionalVersions")
-				?.to<List<String>>()
-				.orEmpty()
-
-			if (additional.isEmpty()) {
-				fabricLikeVersionRange = main
-			} else {
-				val all = (listOf(main) + additional).distinct()
-				val sorted = all.sortedWith(compareBy { version ->
-					version.split(".").joinToString(".") { it.padStart(5, '0') }
-				})
-
-				val min = sorted.first()
-				val max = sorted.last()
-				fabricLikeVersionRange = ">=$min <=$max"
-			}
+			fabricLikeVersionRange = prop("deps.minecraft")
 		}
 		required("fabric-api") {
 			slug("fabric-api")
@@ -52,20 +32,22 @@ platform {
 
 loom {
 	accessWidenerPath = rootProject.file("src/main/resources/aw/${sc.current.version}.accesswidener")
+	val devJvmArgs = propsList("mod", "dev_jvm_args") +
+		propsList("mod", "dev_jvm_args_mixin_debug")
 	runs.named("client") {
 		client()
-		ideConfigGenerated(true)
-		runDir = "run/"
-		environment = "client"
-		programArgs("--username=Dev")
-		configName = "Fabric Client"
+		generateRunConfig.set(true)
+		runDirectory.set(layout.projectDirectory.dir("run"))
+		programArguments.add("--username=Dev")
+		jvmArguments.addAll(devJvmArgs)
+		displayName.set("Fabric Client")
 	}
 	runs.named("server") {
 		server()
-		ideConfigGenerated(true)
-		runDir = "run/"
-		environment = "server"
-		configName = "Fabric Server"
+		generateRunConfig.set(true)
+		runDirectory.set(layout.projectDirectory.dir("run"))
+		jvmArguments.addAll(devJvmArgs)
+		displayName.set("Fabric Server")
 	}
 }
 

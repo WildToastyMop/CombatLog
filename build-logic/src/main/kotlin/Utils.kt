@@ -21,6 +21,33 @@ fun Project.propsList(vararg segments: String): List<String> = runCatching {
 	sc.properties.raw(*segments).asList().map { it.toString() }
 }.getOrElse { error("Missing or malformed '${segments.joinToString(".")}' in stonecutter.properties.toml") }
 
+fun Project.publishAdditionalVersions(): List<String> =
+	sc.properties.rawOrNull("publish", "additionalVersions")?.to<List<String>>().orEmpty()
+
+fun Project.supportedMinecraftVersions(): List<String> =
+	(listOf(prop("deps.minecraft")) + publishAdditionalVersions())
+		.distinct()
+		.sortedWith(Comparator(::compareMinecraftVersions))
+
+fun Project.fabricMinecraftRange(): String = supportedMinecraftVersions().let { versions ->
+	if (versions.size == 1) versions.first() else ">=${versions.first()} <=${versions.last()}"
+}
+
+fun Project.forgeMinecraftRange(): String = supportedMinecraftVersions().let { versions ->
+	if (versions.size == 1) versions.first() else "[${versions.first()},${versions.last()}]"
+}
+
+private fun compareMinecraftVersions(left: String, right: String): Int {
+	val leftParts = left.split('.')
+	val rightParts = right.split('.')
+	for (index in 0 until maxOf(leftParts.size, rightParts.size)) {
+		val leftPart = leftParts.getOrNull(index)?.toIntOrNull() ?: 0
+		val rightPart = rightParts.getOrNull(index)?.toIntOrNull() ?: 0
+		if (leftPart != rightPart) return leftPart - rightPart
+	}
+	return 0
+}
+
 fun Project.env(variable: String): String? {
 	providers.environmentVariable(variable).orNull?.let { return it }
 	return rootProject.file(".env").takeIf { it.exists() }?.let { f ->

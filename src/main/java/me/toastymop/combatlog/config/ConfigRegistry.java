@@ -60,7 +60,7 @@ public class ConfigRegistry {
 			new ConfigOption<>("messages.blocked_block", "The message shown when a player attempts to use a blocked block or item.",
 					"You are in combat and cannot use this", ConfigValue.STRING,
 					() -> CombatConfig.Config.disabledBlocksMessage, value -> CombatConfig.Config.disabledBlocksMessage = value),
-			new ConfigOption<>("messages.disconnect_death", "The death message shown when a player disconnects while tagged, use {player} and {attacker} to autofill their names.",
+			new ConfigOption<>("messages.disconnect_death", "The death message shown when a player disconnects while tagged, use {player} and {attacker} to autofill their names. Only shown when the showDeathMessages gamerule is on.",
 					"{player} has died of cowardice", ConfigValue.STRING,
 					() -> CombatConfig.Config.deathMessage, value -> CombatConfig.Config.deathMessage = value),
 

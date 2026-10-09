@@ -9,6 +9,7 @@
   },
   "mixins": [
     "DisconnectMixin",
+    "DamageSourceMixin",
     "EntityDamageMixin",
     "EntityDataSaverMixin",
     "PlayerMixin",

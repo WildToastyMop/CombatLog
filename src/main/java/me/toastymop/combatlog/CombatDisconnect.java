@@ -1,29 +1,21 @@
 package me.toastymop.combatlog;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import me.toastymop.combatlog.config.CombatConfig;
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;
-import net.minecraft.network.chat.ChatType;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.commands.Commands;
 import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.commands.Commands;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 
 //? if >1.21.10 {
-import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.server.permissions.PermissionSet;
-//?} else {
-/*import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
-import java.util.UUID;
-import static net.minecraft.world.level.GameRules.RULE_SHOWDEATHMESSAGES;
-*///?}
+//?}
 
 public class CombatDisconnect {
     public static void OnPlayerDisconnect(ServerPlayer entity) {
@@ -31,11 +23,7 @@ public class CombatDisconnect {
             //? if >1.21.5 {
             ServerLevel world = entity.level();
             //?} else {
-            /*//? if >=1.20 {
-            ServerLevel world = entity.serverLevel();
-             //?} else {
-            /^ServerLevel world = entity.getLevel();
-            ^///?}
+            /*ServerLevel world = entity.serverLevel();
             *///?}
             MinecraftServer server = world.getServer();
 
@@ -43,51 +31,11 @@ public class CombatDisconnect {
             String attackerName = TagData.getAttacker((IEntityDataSaver) entity);
 
             if (CombatConfig.Config.disconnectKill) {
-                // if anyone knows how to make this less terrible please help me im begging I tried using the new damagetypes for soooo long
-
-				String deathmsg = CombatConfig.Config.deathMessage
-						.replace("{player}", playerName)
-						.replace("{attacker}", attackerName);
-
-                Component deathMessage = Component.nullToEmpty(deathmsg);
-                //? if >1.21.10 {
-                GameRules gamerule = world.getGameRules();
-                if (gamerule.get(GameRules.SHOW_DEATH_MESSAGES)) {
-                    gamerule.set(GameRules.SHOW_DEATH_MESSAGES,false, server);
-                    entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
-                    gamerule.set(GameRules.SHOW_DEATH_MESSAGES,true, server);
-                    server.getPlayerList().broadcastSystemMessage(deathMessage, false);
+                //? if >1.21.5 {
+                entity.hurtServer(world, CombatDamage.source(world), Float.MAX_VALUE);
                 //?} else {
-                /*GameRules.BooleanValue gamerule = server.getGameRules().getRule(RULE_SHOWDEATHMESSAGES);
-                if (gamerule.get()) {
-                    gamerule.set(false, server);
-                    //? if >1.21.5 {
-                    entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
-                     //?} else {
-                    /^//? if >=1.20 {
-                    entity.hurt(entity.damageSources().fellOutOfWorld(), 100000);
-                     //?} else {
-                    /^¹entity.hurt(DamageSource.OUT_OF_WORLD, 100000);
-                    ¹^///?}
-                    ^///?}
-                    gamerule.set(true, server);
-                    //? if >=1.19 {
-                    server.getPlayerList().broadcastSystemMessage(deathMessage, false);
-                    //?} else {
-                    /^server.getPlayerList().broadcastMessage(deathMessage, ChatType.CHAT, UUID.randomUUID());
-                    ^///?}
+                /*entity.hurt(CombatDamage.source(world), Float.MAX_VALUE);
                 *///?}
-                } else {
-                    //? if >1.21.5 {
-                    entity.hurtServer(world, entity.damageSources().fellOutOfWorld(), 100000);
-                    //?} else {
-                        /*//? if >=1.20 {
-                        entity.hurt(entity.damageSources().fellOutOfWorld(), 100000);
-                        //?} else {
-                        /^entity.hurt(DamageSource.OUT_OF_WORLD, 100000);
-                        ^///?}
-                    *///?}
-                }
             }
 
             String disconnectCommand = CombatConfig.Config.disconnectCommand;
@@ -112,5 +60,13 @@ public class CombatDisconnect {
 
             TagData.endCombat((IEntityDataSaver) entity);
         }
+    }
+
+    public static Component deathMessage(LivingEntity victim) {
+        String attacker = victim instanceof ServerPlayer player ? TagData.getAttacker((IEntityDataSaver) player) : "";
+        String message = CombatConfig.Config.deathMessage
+                .replace("{player}", victim.getName().getString())
+                .replace("{attacker}", attacker);
+        return Component.nullToEmpty(message);
     }
 }

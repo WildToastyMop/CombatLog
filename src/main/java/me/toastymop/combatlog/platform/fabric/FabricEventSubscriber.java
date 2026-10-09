@@ -2,7 +2,7 @@ package me.toastymop.combatlog.platform.fabric;
 
 //? fabric {
 
-import me.toastymop.combatlog.CombatConfig;
+import me.toastymop.combatlog.config.CombatConfig;
 import me.toastymop.combatlog.CombatTicks;
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;

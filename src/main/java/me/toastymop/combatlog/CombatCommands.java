@@ -1,6 +1,7 @@
 package me.toastymop.combatlog;
 
 import com.mojang.brigadier.CommandDispatcher;
+import me.toastymop.combatlog.config.CombatConfig;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -31,7 +32,7 @@ public class CombatCommands {
                 .then(Commands.literal("reload").requires(source -> source.hasPermission(4))
         *///?}
                         .executes(context -> {
-                            CombatConfig.CONFIG = CombatConfig.load();
+                            CombatConfig.load();
                             //? if >=1.19.2 {
                             context.getSource().sendSuccess(/*? >=1.20.1 >>*/()-> Component.literal("CombatLog config reloaded!"),false);
                             //?} else {

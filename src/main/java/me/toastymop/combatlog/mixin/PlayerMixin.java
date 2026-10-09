@@ -1,7 +1,7 @@
 package me.toastymop.combatlog.mixin;
 
 
-import me.toastymop.combatlog.CombatConfig;
+import me.toastymop.combatlog.config.CombatConfig;
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;
 import net.minecraft.world.entity.player.Player;

@@ -3,7 +3,7 @@ package me.toastymop.combatlog.platform.forge;
 //? if forge {
 
 /*import me.toastymop.combatlog.CombatCommands;
-import me.toastymop.combatlog.CombatConfig;
+import me.toastymop.combatlog.config.CombatConfig;
 import me.toastymop.combatlog.CombatNotice;
 import me.toastymop.combatlog.CombatTicks;
 import me.toastymop.combatlog.util.IEntityDataSaver;
@@ -26,7 +26,7 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 public class ForgeEventSubscriber {
 	@SubscribeEvent
 	public static void onStart(ServerStartedEvent event) {
-		CombatConfig.CONFIG = CombatConfig.load();
+		CombatConfig.load();
 	}
 	@SubscribeEvent
 	public static void onTick(TickEvent.ServerTickEvent event){

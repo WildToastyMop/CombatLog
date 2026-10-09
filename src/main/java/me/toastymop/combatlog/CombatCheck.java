@@ -3,6 +3,7 @@ package me.toastymop.combatlog;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.ParseResults;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import me.toastymop.combatlog.config.CombatConfig;
 import me.toastymop.combatlog.util.IEntityDataSaver;
 import me.toastymop.combatlog.util.TagData;
 import net.minecraft.commands.CommandSourceStack;

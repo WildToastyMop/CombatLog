@@ -3,7 +3,7 @@ package me.toastymop.combatlog.platform.neoforge;
 //? neoforge {
 
 /*import me.toastymop.combatlog.CombatCheck;
-import me.toastymop.combatlog.CombatConfig;
+import me.toastymop.combatlog.config.CombatConfig;
 import me.toastymop.combatlog.CombatNotice;
 import me.toastymop.combatlog.CombatTicks;
 import me.toastymop.combatlog.CombatCommands;
@@ -28,7 +28,7 @@ public class NeoforgeEventSubscriber {
 
 	@SubscribeEvent
     public static void onStart(ServerStartedEvent event) {
-        CombatConfig.CONFIG = CombatConfig.load();
+        CombatConfig.load();
     }
     @SubscribeEvent
     public static void onTick(ServerTickEvent.Post event) {

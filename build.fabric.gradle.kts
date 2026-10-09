@@ -101,6 +101,8 @@ dependencies {
 	// include(libs.moulberry.mixinconstraints)
 	modImplementation("net.fabricmc.fabric-api:fabric-api:${prop("deps.fabric-api")}")
 	modLocalRuntime("maven.modrinth:mOgUt4GM:${prop("deps.modmenu")}")
-	implementation("org.quiltmc.parsers:json:0.2.1")
-	include("org.quiltmc.parsers:json:0.2.1")
+	implementation("com.electronwill.night-config:core:3.8.3")
+	implementation("com.electronwill.night-config:toml:3.8.3")
+	include("com.electronwill.night-config:core:3.8.3")
+	include("com.electronwill.night-config:toml:3.8.3")
 }

@@ -1,7 +1,7 @@
 package me.toastymop.combatlog.util;
 
 import me.toastymop.combatlog.CombatCheck;
-import me.toastymop.combatlog.CombatConfig;
+import me.toastymop.combatlog.config.CombatConfig;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.world.entity.player.Player;
@@ -88,7 +88,7 @@ public class TagData {
         ListTag attackers = persistentData.getListOrEmpty("attackerHistory");
         if (attackers.isEmpty()) return "";
 
-        boolean byDamage = "damage".equals(CombatConfig.Config.attackerCredit);
+        boolean byDamage = "most_damage".equals(CombatConfig.Config.attackerCredit);
         int bestIndex = -1;
         long maxTime = -1L;
         float maxDamage = -1.0f;
@@ -148,7 +148,7 @@ public class TagData {
         ListTag attackers = persistentData.getList("attackerHistory", 10);
         if (attackers.isEmpty()) return "";
 
-        boolean byDamage = "damage".equals(CombatConfig.Config.attackerCredit);
+        boolean byDamage = "most_damage".equals(CombatConfig.Config.attackerCredit);
         int bestIndex = -1;
         long maxTime = -1L;
         float maxDamage = -1.0f;

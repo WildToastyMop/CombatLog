@@ -3,7 +3,7 @@ package me.toastymop.combatlog.platform.fabric;
 //? fabric {
 
 import dev.kikugie.fletching_table.annotation.fabric.Entrypoint;
-import me.toastymop.combatlog.CombatConfig;
+import me.toastymop.combatlog.config.CombatConfig;
 import me.toastymop.combatlog.CombatCommands;
 import me.toastymop.combatlog.CombatNotice;
 import net.fabricmc.api.ModInitializer;
@@ -21,9 +21,9 @@ public class FabricEntrypoint implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		CombatConfig.CONFIG = CombatConfig.load();
+		CombatConfig.load();
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
-			CombatConfig.CONFIG = CombatConfig.load();
+			CombatConfig.load();
 		});
 		ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
 			CombatNotice.destroyBossBar(handler.player);

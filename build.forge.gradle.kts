@@ -88,8 +88,7 @@ dependencies {
 
 	// implementation(libs.moulberry.mixinconstraints)
 	// jarJar(libs.moulberry.mixinconstraints)
-	implementation("org.quiltmc.parsers:json:0.2.1")
-	jarJar("org.quiltmc.parsers:json:0.2.1")
+	implementation("com.electronwill.night-config:toml:3.8.3")
 }
 
 sourceSets {

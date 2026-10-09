@@ -20,8 +20,9 @@ import net.minecraft.resources.Identifier;
 /*import net.minecraft.resources.Identifier;
 *///?}
 
-import static me.toastymop.combatlog.CombatConfig.Config.combatTime;
-import static me.toastymop.combatlog.CombatConfig.Config.noticeType;
+import me.toastymop.combatlog.config.CombatConfig;
+import static me.toastymop.combatlog.config.CombatConfig.Config.combatTime;
+import static me.toastymop.combatlog.config.CombatConfig.Config.noticeType;
 
 public class CombatNotice {
 

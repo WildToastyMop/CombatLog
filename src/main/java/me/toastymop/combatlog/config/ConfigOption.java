@@ -39,6 +39,10 @@ public class ConfigOption<T> {
 		return type.isList();
 	}
 
+	public boolean contains(String input) {
+		return type.contains(get(), input);
+	}
+
 	public List<String> suggestions() {
 		return type.suggestions();
 	}

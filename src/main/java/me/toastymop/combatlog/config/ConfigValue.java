@@ -82,6 +82,10 @@ public abstract class ConfigValue<T> {
 		return null;
 	}
 
+	public boolean contains(T current, String input) {
+		return false;
+	}
+
 	public boolean isList() {
 		return false;
 	}
@@ -159,6 +163,11 @@ public abstract class ConfigValue<T> {
 				List<String> values = new ArrayList<>(current);
 				values.remove(input.trim());
 				return values;
+			}
+
+			@Override
+			public boolean contains(List<String> current, String input) {
+				return current.contains(input.trim());
 			}
 
 			@Override

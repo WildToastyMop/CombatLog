@@ -72,7 +72,7 @@ dependencies {
 
 	// implementation(libs.moulberry.mixinconstraints)
 	// jarJar(libs.moulberry.mixinconstraints)
-	implementation("com.electronwill.night-config:toml:3.8.3")
+	compileOnly("com.electronwill.night-config:toml:3.8.3")
 }
 
 sourceSets {

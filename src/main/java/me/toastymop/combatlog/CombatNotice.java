@@ -79,7 +79,9 @@ public class CombatNotice {
 				//?}
 			} else if (Objects.equals(noticeType, "bossbar")) {
 				CustomBossEvent event = bossManager.get(bossID);
-				assert event != null;
+				if (event == null) {
+					return;
+				}
 				event.setName(outCombat);
 				event.setProgress((float) (tagTime / CombatCheck.tickRate) / combatTime);
 				event.setColor(BossEvent.BossBarColor.GREEN);

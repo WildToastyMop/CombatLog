@@ -32,6 +32,7 @@ public class TagData {
         nbt.putInt("combatTime", 0);
         nbt.putBoolean("inCombat", false);
         nbt.remove("attackerHistory");
+        CombatCheck.clearCooldowns((Player) player);
     }
     public static int getTagTime(IEntityDataSaver player) {
         CompoundTag nbt = player.getPersistentData();

@@ -154,4 +154,18 @@ public class CombatCheck {
             *///?}
         }
     }
+
+    public static void clearCooldowns(Player player){
+        List<Item> list = CombatConfig.Config.disabledItems;
+        for (int i = 0, size = list.size(); i < size; i++) {
+            Item item = list.get(i);
+            if (item == null) continue;
+
+            //? if >=1.21.6 {
+            player.getCooldowns().addCooldown(new ItemStack(item), 0);
+            //?} else {
+            /*player.getCooldowns().addCooldown(item, 0);
+            *///?}
+        }
+    }
 }

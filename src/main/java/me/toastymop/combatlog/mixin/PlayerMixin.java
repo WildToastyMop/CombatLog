@@ -8,14 +8,14 @@ import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Player.class)
 public class PlayerMixin {
-    @Inject(method = "startFallFlying", at = @At("HEAD"), cancellable = true)
-    private void preventFlying(CallbackInfo ci) {
+    @Inject(method = "tryToStartFallFlying", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Player;startFallFlying()V"), cancellable = true)
+    private void preventFlying(CallbackInfoReturnable<Boolean> cir) {
         if (CombatConfig.Config.disableElytra && TagData.getCombat((IEntityDataSaver) this)) {
-            ci.cancel();
+            cir.setReturnValue(false);
         }
     }
 }

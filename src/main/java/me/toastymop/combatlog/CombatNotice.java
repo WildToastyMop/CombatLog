@@ -33,7 +33,7 @@ public class CombatNotice {
 		Identifier bossID = Identifier.fromNamespaceAndPath("combatlog", player.getUUID().toString());
 		//?} else
 		//Identifier bossID = Identifier.tryBuild("combatlog", player.getUUID().toString());
-		if (!endCombat) {
+		if (!endCombat && CombatConfig.Config.combatNotice) {
 			String message = CombatConfig.Config.inCombat
 					.replace("{timeLeft}", String.valueOf(tagTime / CombatCheck.tickRate));
 			//? if >=1.19 {
@@ -62,7 +62,7 @@ public class CombatNotice {
 			}
 		}
 
-		if (endCombat) {
+		if (endCombat && CombatConfig.Config.combatNotice) {
 			//? if >=1.19 {
 			MutableComponent outCombat = Component.literal(CombatConfig.Config.outCombat);
 			//?} else {

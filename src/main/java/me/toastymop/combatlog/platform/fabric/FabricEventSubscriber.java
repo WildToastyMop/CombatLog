@@ -34,7 +34,9 @@ public class FabricEventSubscriber implements ServerTickEvents.EndTick{
 		//if(CombatConfig.Config.disabledBlocks.stream().anyMatch(disableStack -> disableStack == block.getItem())) {
 		if(CombatConfig.Config.disabledBlocks.contains(world.getBlockState(hitResult.getBlockPos()).getBlock().asItem())) {
 			//? if >1.17 {
-			((ServerPlayer)player).sendSystemMessage(Component.nullToEmpty(CombatConfig.Config.disabledBlocksMessage).copy().withStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+			if(CombatConfig.Config.combatNotice) {
+				((ServerPlayer) player).sendSystemMessage(Component.nullToEmpty(CombatConfig.Config.disabledBlocksMessage).copy().withStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+			}
 			//?} else
 			/*player.sendMessage(Component.nullToEmpty(CombatConfig.Config.disabledBlocksMessage).copy().withStyle(Style.EMPTY.withColor(ChatFormatting.RED)), Util.NIL_UUID);*/
 			return InteractionResult.FAIL;

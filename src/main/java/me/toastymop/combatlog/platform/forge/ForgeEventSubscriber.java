@@ -55,7 +55,9 @@ public class ForgeEventSubscriber {
 		ServerPlayer player = (ServerPlayer) event.getEntity();
 		if(!TagData.getCombat((IEntityDataSaver) player)) return;
 		if(CombatConfig.Config.disabledBlocks.contains(block.getItem())) {
-			((ServerPlayer)player).sendSystemMessage(Component.nullToEmpty(CombatConfig.Config.disabledBlocksMessage).copy().withStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+			if(CombatConfig.Config.combatNotice) {
+				((ServerPlayer) player).sendSystemMessage(Component.nullToEmpty(CombatConfig.Config.disabledBlocksMessage).copy().withStyle(Style.EMPTY.withColor(ChatFormatting.RED)));
+			}
 			event.setCanceled(true);
 		}
 	}

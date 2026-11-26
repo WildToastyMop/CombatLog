@@ -19,32 +19,32 @@ public class ConfigRegistry {
 			new ConfigOption<>("combat.self_damage", "Tag a player when they damage themselves.",
 					true, ConfigValue.BOOL,
 					() -> CombatConfig.Config.selfDamage, value -> CombatConfig.Config.selfDamage = value),
-			new ConfigOption<>("combat.fire_damage", "Tag a player from fire damage, e.g. Fire Aspect.",
+			new ConfigOption<>("combat.fire_damage", "Tag a player from fire damage, e.g. Fire Aspect or lava.",
 					true, ConfigValue.BOOL,
 					() -> CombatConfig.Config.fireDamage, value -> CombatConfig.Config.fireDamage = value),
 
-			new ConfigOption<>("restrictions.elytra", "Stop players starting elytra flight while tagged. This will not force them out of the air.",
+			new ConfigOption<>("restrictions.elytra", "Stops players starting elytra flight while tagged. Players already in the air are not pulled down.",
 					false, ConfigValue.BOOL,
 					() -> CombatConfig.Config.disableElytra, value -> CombatConfig.Config.disableElytra = value),
-			new ConfigOption<>("restrictions.ender_pearls", "Block ender pearl teleports while tagged.",
+			new ConfigOption<>("restrictions.ender_pearls", "Stops tagged players throwing ender pearls, and a pearl already in flight is removed when it hits instead of teleporting. Pearls are added to blocked items automatically.",
 					false, ConfigValue.BOOL,
 					() -> CombatConfig.Config.disablePearl, value -> {
 						CombatConfig.Config.disablePearl = value;
 						CombatConfig.Config.disabledItems = CombatConfig.resolveItems(CombatConfig.Config.blockedItemIds);
 					}),
-			new ConfigOption<>("restrictions.blocked_items", "Items that cannot be used while tagged, use commas to separate them. Supports \"namespace:*\" for whole namespaces, only items that do something when right-clicked. example \"minecraft:firework_rocket,minecraft:water_bucket\"",
+			new ConfigOption<>("restrictions.blocked_items", "Items that cannot be used while tagged, as ids like minecraft:firework_rocket. Only right-click actions are affected. Use mod:* for a whole mod, e.g. waystones:*.",
 					List.<String>of(), ConfigValue.list(ConfigRegistry::itemIds),
 					() -> CombatConfig.Config.blockedItemIds, value -> {
 						CombatConfig.Config.blockedItemIds = value;
 						CombatConfig.Config.disabledItems = CombatConfig.resolveItems(value);
 					}),
-			new ConfigOption<>("restrictions.blocked_blocks", "Blocks that cannot be right-clicked while tagged, use commas to separate them. Supports \"namespace:*\" for whole namespaces, only blocks that do something when right-clicked. example \"minecraft:chest,minecraft:oak_door,waystones:waystone\"",
+			new ConfigOption<>("restrictions.blocked_blocks", "Blocks that cannot be right-clicked while tagged, as ids like minecraft:chest or waystones:waystone. Only right-click interactions are affected. Use mod:* for a whole mod, e.g. waystones:*.",
 					List.<String>of(), ConfigValue.list(ConfigRegistry::blockIds),
 					() -> CombatConfig.Config.blockedBlockIds, value -> {
 						CombatConfig.Config.blockedBlockIds = value;
 						CombatConfig.Config.disabledBlocks = CombatConfig.findItems(value);
 					}),
-			new ConfigOption<>("restrictions.blocked_commands", "Commands blocked while tagged, do not include the slash and use commas to separate them. example \"home,spawn,rtp\"",
+			new ConfigOption<>("restrictions.blocked_commands", "Commands blocked while tagged, without the slash, e.g. home,spawn,rtp. Matches the first word only, so blocking home also blocks home bed.",
 					List.<String>of(), ConfigValue.list(ArrayList::new),
 					() -> CombatConfig.Config.blockedCommands, value -> CombatConfig.Config.blockedCommands = value),
 
@@ -60,11 +60,11 @@ public class ConfigRegistry {
 			new ConfigOption<>("messages.blocked_block", "The message shown when a player attempts to use a blocked block or item.",
 					"You are in combat and cannot use this", ConfigValue.STRING,
 					() -> CombatConfig.Config.disabledBlocksMessage, value -> CombatConfig.Config.disabledBlocksMessage = value),
-			new ConfigOption<>("messages.disconnect_death", "The death message shown when a player disconnects while tagged, use {player} and {attacker} to autofill their names. Only shown when the showDeathMessages gamerule is on.",
+			new ConfigOption<>("messages.disconnect_death", "The death message when a tagged player disconnects. {player} and {attacker} are filled in, e.g. \"{player} was killed by {attacker}\". {attacker} is blank when no other player was involved.",
 					"{player} has died of cowardice", ConfigValue.STRING,
 					() -> CombatConfig.Config.deathMessage, value -> CombatConfig.Config.deathMessage = value),
 
-			new ConfigOption<>("notice.enabled", "Whether a player gets a popup when they enter combat or when trying to run blocked commands.",
+			new ConfigOption<>("notice.enabled", "Show the combat countdown and the messages for blocked commands, items and blocks. Turning it off leaves players with no feedback.",
 					true, ConfigValue.BOOL,
 					() -> CombatConfig.Config.combatNotice, value -> CombatConfig.Config.combatNotice = value),
 			new ConfigOption<>("notice.style", "Where the combat notice appears, use \"hotbar\" or \"bossbar\".",
@@ -74,14 +74,14 @@ public class ConfigRegistry {
 			new ConfigOption<>("disconnect.kill", "Whether disconnecting while tagged kills the player.",
 					true, ConfigValue.BOOL,
 					() -> CombatConfig.Config.disconnectKill, value -> CombatConfig.Config.disconnectKill = value),
-			new ConfigOption<>("disconnect.attacker_credit", "Whether the last person to attack or the person with the most damage gets credit, use \"last_hit\" or \"most_damage\".",
+			new ConfigOption<>("disconnect.attacker_credit", "Who gets credit for the kill: \"last_hit\" or \"most_damage\".",
 					"last_hit", ConfigValue.oneOf("last_hit", "most_damage"),
 					() -> CombatConfig.Config.attackerCredit, value -> CombatConfig.Config.attackerCredit = value),
 
-			new ConfigOption<>("hooks.on_tag", "A command to be run when a player is put into combat, use {player} to autofill their name and {tagTime} for the duration of combat. Runs on BOTH players every time they take damage NOT just the start, leave blank to disable. example \"effect give {player} glowing {tagTime}\"",
+			new ConfigOption<>("hooks.on_tag", "Command to run when a player is tagged, with {player} and {tagTime} filled in, e.g. \"effect give {player} glowing {tagTime}\". Runs for both players on every hit, not only when combat starts. Leave blank to disable.",
 					"", ConfigValue.STRING,
 					() -> CombatConfig.Config.combatCommand, value -> CombatConfig.Config.combatCommand = value),
-			new ConfigOption<>("hooks.on_disconnect", "A command to be run when a tagged player disconnects, use {player} and {attacker} to autofill their names, leave blank to disable. example \"warn {player} combatlogging\"",
+			new ConfigOption<>("hooks.on_disconnect", "Command to run when a tagged player disconnects, with {player} and {attacker} filled in, e.g. \"say {player} combat logged\". Runs in addition to the kill. Leave blank to disable.",
 					"", ConfigValue.STRING,
 					() -> CombatConfig.Config.disconnectCommand, value -> CombatConfig.Config.disconnectCommand = value)
 	);

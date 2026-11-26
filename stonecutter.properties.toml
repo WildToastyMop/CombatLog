@@ -2,7 +2,7 @@
 id = "combatlog"
 name = "CombatLog"
 group = "me.toastymop"
-version = "2.8.6"
+version = "2.8.7"
 channel_tag = ""
 description = "This mod tries to prevent people from combat logging on a server."
 authors = ["WildToastyMop"]

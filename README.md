@@ -1,3 +1,5 @@
+<img src="src/main/resources/assets/icon.png" width="128" alt="CombatLog icon">
+
 # CombatLog
 
 A simple (not so much anymore) mod that tries to prevent players from leaving while in combat.
@@ -15,24 +17,23 @@ When one player hits another, both of them are tagged as in combat for a set tim
 - Two command hooks, one when a player is tagged and one when a tagged player disconnects
 - All messages and defaults in config/combatlog.toml, editable in game with /combatlog config
 
+## Downloads
+
+The latest release is on [Modrinth](https://modrinth.com/mod/combatlog) and [CurseForge](https://www.curseforge.com/minecraft/mc-mods/combatlog). The [releases page](https://github.com/WildToastyMop/CombatLog/releases) has a file for every loader and Minecraft version.
+
 ## Installation
 
-Install it on the server. Clients do not need it, though it works in singleplayer and LAN worlds when installed there. Fabric, Forge and NeoForge builds are available for several Minecraft versions; the releases page lists them.
+Install it on the server. Clients do not need it, though it works in singleplayer and LAN worlds when installed there. The [installation page](https://github.com/WildToastyMop/CombatLog/wiki/Installation) covers supported versions, Java and which file to pick.
 
 ## Configuration
 
-Settings live in config/combatlog.toml and are grouped into combat, restrictions, messages, notice, disconnect and hooks.
+Settings live in `config/combatlog.toml`, created on first start. Edit the file and run `/combatlog reload`, or change values in game with `/combatlog config`; both write the same file.
 
-- /combatlog config list
-- /combatlog config get, set, add, remove and reset <section>.<option> [value]
-- /combatlog reload
-- /combatlog set <player>
-
-Blocked commands match the first word only, so blocking `home` also blocks `home bed`. The old json5 config is renamed to combatlog-common.deprecated.json5 on startup and is not imported.
+Every option and default is on the [configuration page](https://github.com/WildToastyMop/CombatLog/wiki/Configuration), and the [commands page](https://github.com/WildToastyMop/CombatLog/wiki/Commands) lists the command syntax.
 
 ## Building
 
-IntelliJ with the Stonecutter Dev and Minecraft Development plugins, and Java 25, 21 and 17 installed. Use the Gradle wrapper.
+Needs Java 25 and the Gradle wrapper. `./gradlew buildAndCollect` builds every version and puts the jars in `build/libs/<mod version>/`; the [building page](https://github.com/WildToastyMop/CombatLog/wiki/Building) covers the IDE setup, building a single version and running a dev server.
 
 ## License
 

@@ -14,4 +14,4 @@
 
 - [ ] `./gradlew buildAndCollect` passes
 - [ ] Commit subjects use conventional commits (`feat:`, `fix:`, `refactor:`, ...)
-- [ ] New or renamed config options are mentioned in the README
+- [ ] New or renamed config options are noted so the wiki page can follow

@@ -1,0 +1,84 @@
+name: Bug report
+description: Something is broken or behaves differently than the README says
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Search the open and closed issues first. If the server crashed, include the crash report too.
+  - type: input
+    id: mod-version
+    attributes:
+      label: CombatLog version
+      description: The number in the downloaded file name.
+      placeholder: "2.8.6"
+    validations:
+      required: true
+  - type: input
+    id: minecraft-version
+    attributes:
+      label: Minecraft version
+      placeholder: "1.21.1"
+    validations:
+      required: true
+  - type: dropdown
+    id: loader
+    attributes:
+      label: Mod loader
+      options:
+        - Fabric
+        - Forge
+        - NeoForge
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Where it happens
+      options:
+        - Dedicated server
+        - Singleplayer world
+        - LAN world
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What the mod did, and what you expected instead. Say whether the player was tagged, how they took damage, and whether they disconnected.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Tag a player with an arrow
+        2. Run /combatlog config set combat.duration_seconds 5
+        3. Disconnect before the tag ends
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Relevant lines from logs/latest.log or the crash report. Drag the file in if it is long. If the log has nothing in it, say so.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: config
+    attributes:
+      label: Config
+      description: The config/combatlog.toml options that differ from the defaults, if any.
+      render: toml
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I am on the latest release for this Minecraft version.
+          required: true
+        - label: I searched existing issues for this bug.
+          required: true

@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest behaviour the mod does not have yet
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the README and the existing issues first — the feature may already exist as a config option or a command.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve
+      description: The situation on your server where the mod gets in the way or falls short.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What it should do
+      description: The behaviour you want. If it belongs to an existing section (combat, restrictions, messages, notice, disconnect, hooks), say which.
+    validations:
+      required: true
+  - type: input
+    id: config-name
+    attributes:
+      label: Config option name
+      description: If it should be toggleable, what would you call it? Existing options look like combat.duration_seconds.
+      placeholder: restrictions.blocked_commands
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives
+      description: What you tried instead, e.g. a command hook, or a smaller version of the idea.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched the README and existing issues for this.
+          required: true

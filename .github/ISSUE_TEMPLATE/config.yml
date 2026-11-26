@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Configuration docs
+    url: https://github.com/WildToastyMop/CombatLog#configuration
+    about: Commands and config sections are documented in the README.

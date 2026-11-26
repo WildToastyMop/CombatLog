@@ -17,7 +17,7 @@ platform {
 			forgeLikeVersionRange = forgeMinecraftRange()
 		}
 		required("forge") {
-			forgeLikeVersionRange.set("[1,)")
+			forgeLikeVersionRange.set("[${prop("deps.forge")},)")
 		}
 	}
 }

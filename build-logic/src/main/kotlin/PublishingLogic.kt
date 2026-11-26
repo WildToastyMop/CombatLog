@@ -36,7 +36,7 @@ fun Project.configureMavenPublishing(ctx: Context) {
 				}
 			}
 			developers {
-				project.sc.properties.raw("mod.pom.developers").asList().forEach { devNode ->
+				project.sc.properties.raw("mod", "pom", "developers").asList().forEach { devNode ->
 
 					val dev = devNode.asMap()
 					developer {
@@ -97,13 +97,13 @@ fun Project.configureModPublishing(ctx: Context) {
 			}
 		}
 
-		modrinth(ctx, ctx.publishAdditionalVersions, mrStaging, modrinthAccessToken)
-		if (!mrStaging) curseforge(ctx, ctx.publishAdditionalVersions, curseforgeAccessToken)
+		modrinth(ctx, ctx.compatibleMinecraftVersions, mrStaging, modrinthAccessToken)
+		if (!mrStaging) curseforge(ctx, ctx.compatibleMinecraftVersions, curseforgeAccessToken)
 	}
 }
 
 private fun ModPublishExtension.modrinth(
-	ctx: Context, additionalVersions: List<String>, staging: Boolean, accessToken: String?
+	ctx: Context, compatibleVersions: List<String>, staging: Boolean, accessToken: String?
 ) = modrinth {
 	if (staging) apiEndpoint = "https://staging-api.modrinth.com/v2"
 
@@ -111,7 +111,7 @@ private fun ModPublishExtension.modrinth(
 	projectId = project.env("PUB_MODRINTH_PROJECT_ID")
 
 	this.accessToken = accessToken
-	minecraftVersions.addAll(listOf(ctx.currentMcVersion) + additionalVersions)
+	minecraftVersions.addAll(listOf(ctx.currentMcVersion) + compatibleVersions)
 
 	if (!staging) {
 		val platform = this
@@ -126,7 +126,7 @@ private fun ModPublishExtension.modrinth(
 }
 
 private fun ModPublishExtension.curseforge(
-	ctx: Context, additionalVersions: List<String>, accessToken: String?
+	ctx: Context, compatibleVersions: List<String>, accessToken: String?
 ) = curseforge {
 	projectId = project.env("PUB_CURSEFORGE_PROJECT_ID")
 
@@ -134,7 +134,7 @@ private fun ModPublishExtension.curseforge(
 	server = ctx.environmentPhysicalServer
 
 	this.accessToken = accessToken
-	minecraftVersions.addAll(listOf(ctx.currentMcVersion) + additionalVersions)
+	minecraftVersions.addAll(listOf(ctx.currentMcVersion) + compatibleVersions)
 
 	val platform = this
 	project.afterEvaluate {

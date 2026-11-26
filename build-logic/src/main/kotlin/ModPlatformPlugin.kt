@@ -91,6 +91,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 		configureFletchingTable(ctx)
 		registerGenerateManifestTask(ctx)
+		registerVerifyMinecraftRangeTask(ctx)
 		configureJarTask(ctx)
 		configureIdea()
 		configureProcessResources(ctx)
@@ -100,6 +101,7 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 		configureModPublishing(ctx)
 
 		if (envTrue("PUB_MAVEN_ENABLE")) {
+			apply(plugin = "com.vanniktech.maven.publish")
 			configureMavenPublishing(ctx)
 		}
 	}
@@ -139,6 +141,27 @@ abstract class ModPlatformPlugin @Inject constructor() : Plugin<Project> {
 
 		the<JavaPluginExtension>().sourceSets.named("main") { resources.srcDir(manifestOutputDir) }
 		tasks.named<ProcessResources>("processResources") { dependsOn(generateTask) }
+	}
+
+	private fun Project.registerVerifyMinecraftRangeTask(ctx: Context) {
+		val manifestPath = ctx.loader.modManifestPath
+		val manifestFile = layout.buildDirectory.file("generated/modManifest/$manifestPath")
+		val supported = supportedMinecraftVersions()
+		val verify = tasks.register("verifyMinecraftRange") {
+			group = "verification"
+			description = "Checks that the generated manifest covers every compatible Minecraft version"
+			dependsOn("generateModManifest")
+			inputs.files(manifestFile)
+			inputs.property("supportedMinecraftVersions", supported)
+			doLast {
+				val file = manifestFile.get().asFile
+				val range = minecraftRangeFromManifest(manifestPath, file.readText())
+					?: error("No minecraft version range in ${file.path}")
+				val missing = supported.filterNot { minecraftRangeCovers(range, it) }
+				require(missing.isEmpty()) { "Manifest range '$range' does not cover ${missing.joinToString()}" }
+			}
+		}
+		tasks.named("check") { dependsOn(verify) }
 	}
 
 	private fun Project.configureProcessResources(ctx: Context) {

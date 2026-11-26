@@ -15,17 +15,17 @@ import java.util.*
 val Project.sc: StonecutterBuildExtension
 	get() = extensions.getByType<StonecutterBuildExtension>()
 
-fun Project.prop(name: String): String = (project.sc.properties.get<String>(name))
+fun Project.prop(name: String): String = (project.sc.properties.getAs<String>(name))
 
 fun Project.propsList(vararg segments: String): List<String> = runCatching {
 	sc.properties.raw(*segments).asList().map { it.toString() }
 }.getOrElse { error("Missing or malformed '${segments.joinToString(".")}' in stonecutter.properties.toml") }
 
-fun Project.publishAdditionalVersions(): List<String> =
-	sc.properties.rawOrNull("publish", "additionalVersions")?.to<List<String>>().orEmpty()
+fun Project.minecraftCompatibleVersions(): List<String> =
+	sc.properties.rawOrNull("deps", "minecraft-compatible")?.to<List<String>>().orEmpty()
 
 fun Project.supportedMinecraftVersions(): List<String> =
-	(listOf(prop("deps.minecraft")) + publishAdditionalVersions())
+	(listOf(prop("deps.minecraft")) + minecraftCompatibleVersions())
 		.distinct()
 		.sortedWith(Comparator(::compareMinecraftVersions))
 
@@ -35,6 +35,38 @@ fun Project.fabricMinecraftRange(): String = supportedMinecraftVersions().let { 
 
 fun Project.forgeMinecraftRange(): String = supportedMinecraftVersions().let { versions ->
 	if (versions.size == 1) versions.first() else "[${versions.first()},${versions.last()}]"
+}
+
+private val MANIFEST_MINECRAFT_RANGE = Regex("\"minecraft\"\\s*:\\s*\"([^\"]+)\"")
+
+fun minecraftRangeFromManifest(manifestPath: String, text: String): String? {
+	if (manifestPath.endsWith(".json")) return MANIFEST_MINECRAFT_RANGE.find(text)?.groupValues?.get(1)
+
+	var minecraft = false
+	for (line in text.lines()) {
+		val trimmed = line.trim()
+		if (trimmed.startsWith("[[")) minecraft = false
+		if (trimmed.startsWith("modId") && trimmed.contains("minecraft")) minecraft = true
+		if (minecraft && trimmed.startsWith("versionRange")) return trimmed.substringAfter('=').trim().trim('"')
+	}
+	return null
+}
+
+fun minecraftRangeCovers(manifestRange: String, version: String): Boolean {
+	val range = manifestRange.trim()
+	if (range.startsWith("[") && range.endsWith("]")) {
+		val bounds = range.removeSurrounding("[", "]").split(",", limit = 2).map { it.trim() }
+		return compareMinecraftVersions(version, bounds.first()) >= 0 &&
+			compareMinecraftVersions(version, bounds.last()) <= 0
+	}
+	if (!range.startsWith(">") && !range.startsWith("<")) {
+		return compareMinecraftVersions(version, range) == 0
+	}
+	val parts = range.split(" ").filter { it.isNotBlank() }
+	val minimum = parts.firstOrNull { it.startsWith(">=") }?.removePrefix(">=")
+	val maximum = parts.firstOrNull { it.startsWith("<=") }?.removePrefix("<=")
+	return (minimum == null || compareMinecraftVersions(version, minimum) >= 0) &&
+		(maximum == null || compareMinecraftVersions(version, maximum) <= 0)
 }
 
 private fun compareMinecraftVersions(left: String, right: String): Int {

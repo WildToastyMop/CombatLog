@@ -1,8 +1,4 @@
-<!-- Keep this short. Delete sections that do not apply. -->
-
 ## What changes
-
-<!-- One or two sentences. Reference the issue if there is one: Fixes #12 -->
 
 ## Tested
 

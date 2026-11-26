@@ -17,7 +17,7 @@ platform {
 			forgeLikeVersionRange = forgeMinecraftRange()
 		}
 		required("neoforge") {
-			forgeLikeVersionRange.set("[1,)")
+			forgeLikeVersionRange.set("[${prop("deps.neoforge")},)")
 		}
 	}
 }
@@ -27,7 +27,7 @@ neoForge {
 	accessTransformers.from(rootProject.file("src/main/resources/aw/${stonecutter.current.version}.cfg"))
 	validateAccessTransformers = true
 
-	if (hasProperty("deps.parchment")) parchment {
+	if (sc.properties.contains("deps.parchment")) parchment {
 		val (mc, ver) = prop("deps.parchment").split(':')
 		mappingsVersion = ver
 		minecraftVersion = mc
